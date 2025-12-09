@@ -946,10 +946,25 @@ class TaskTracker {
 }
 
 // Initialize the app and expose it on `window` so inline handlers work
+window.TaskTracker = TaskTracker;
 let app;
-document.addEventListener('DOMContentLoaded', () => {
-    // Attach to window for inline `onchange="app.toggleComplete(...)"` handlers
-    window.app = new TaskTracker();
-    app = window.app;
-});
+
+// Initialize immediately if DOM is ready, else wait for DOMContentLoaded
+function initApp() {
+    if (!window.app) {
+        window.app = new TaskTracker();
+        app = window.app;
+    }
+}
+
+// Approach 1: DOMContentLoaded (fires when HTML is parsed)
+document.addEventListener('DOMContentLoaded', initApp);
+
+// Approach 2: Fallback via setTimeout (if DOMContentLoaded already fired)
+setTimeout(initApp, 0);
+
+// Approach 3: Interactive state (DOM ready but resources may still load)
+if (document.readyState !== 'loading') {
+    setTimeout(initApp, 0);
+}
 
