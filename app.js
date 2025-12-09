@@ -945,9 +945,11 @@ class TaskTracker {
     }
 }
 
-// Initialize the app
+// Initialize the app and expose it on `window` so inline handlers work
 let app;
 document.addEventListener('DOMContentLoaded', () => {
-    app = new TaskTracker();
+    // Attach to window for inline `onchange="app.toggleComplete(...)"` handlers
+    window.app = new TaskTracker();
+    app = window.app;
 });
 
