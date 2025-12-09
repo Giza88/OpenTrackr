@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<!-- PawTrack - single valid HTML document
+    This file contains the app shell (header, modals, views) and exposes stable
+    IDs that `app.js` expects. Do not duplicate the <html>/<head>/<body> structure.
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PawTrack 🐾</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="app-title">📋 PawTrack 🐾</h1>
+            <div class="header-controls">
+                <button id="viewToggle" class="btn-icon" title="Toggle View">
+                    <span id="viewIcon">📊</span>
+                </button>
+                <button id="themeToggle" class="btn-icon" title="Toggle Theme">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <button id="settingsBtn" class="btn-icon" title="Settings">
+                    ⚙️
+                </button>
+            </div>
+        </header>
+
+        <!-- Settings Modal -->
+        <div id="settingsModal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="settingsTitle">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="settingsTitle">Settings</h2>
+                    <button class="close-btn" id="closeSettings" aria-label="Close settings">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="setting-group">
+                        <h3>Notification Settings</h3>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="enableNotifications">
+                            <span>Enable Browser Notifications</span>
+                        </label>
+                    </div>
+                    <div class="setting-group">
+                        <h3>Default Categories</h3>
+                        <div id="categoryManagement">
+                            <div id="categoryList"></div>
+                            <button id="addCategoryBtn" class="btn-secondary">Add Category</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Task Modal -->
+        <div id="taskModal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modalTitle">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modalTitle">Add New Task</h2>
+                    <button class="close-btn" id="closeTaskModal" aria-label="Close task modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="taskForm">
+                        <div class="form-group">
+                            <label for="taskTitle">Title <span class="required">*</span></label>
+                            <input type="text" id="taskTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskDescription">Description</label>
+                            <textarea id="taskDescription" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskCategory">Category</label>
+                            <select id="taskCategory"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskDueDate">Due Date</label>
+                            <input type="datetime-local" id="taskDueDate">
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="taskNotification">
+                                <span>Set Reminder Notification</span>
+                            </label>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">Save Task</button>
+                            <button type="button" class="btn-secondary" id="cancelTask">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="add-task-section">
+                <button id="addTaskBtn" class="btn-primary btn-large">➕ Add New Task</button>
+            </div>
+            <div id="kanbanView" class="kanban-board">
+                <div id="kanbanColumns" class="kanban-columns"></div>
+            </div>
+            <div id="listView" class="task-list-view hidden">
+                <div id="taskListContainer" class="task-list-container"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Undo snackbar -->
+    <div id="snackbar" class="snackbar hidden" role="status" aria-live="polite">
+        <span class="snackbar-message">Action performed</span>
+        <button id="snackbarUndo" class="btn-secondary">Undo</button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
