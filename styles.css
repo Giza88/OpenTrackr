@@ -75,7 +75,7 @@ body {
    Updated to use the second image `pawtrack_background2.jpg` saved in `public/images`.
    Vite serves files from `public/` at the site root, so use an absolute path. */
 body {
-    background-image: url('/images/pawtrack_background2.jpg');
+    background-image: url('./public/images/pawtrack_background2.jpg');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -228,7 +228,7 @@ body::before {
        Vite serves files in `public/` at the root, so the path is /images/... */
     position: relative;
     overflow: hidden;
-    background-image: url('/images/pawtrack.jpg');
+    background-image: url('./public/images/pawtrack.jpg');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
