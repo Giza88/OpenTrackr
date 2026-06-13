@@ -1,0 +1,28 @@
+OpenTrackr — Royalty-free image sources (Unsplash)
+Use these references in your Word document for Task 1 Part 1.
+
+Content images (index.html gallery — 5 required)
+1. planning-desk.jpg   — Person writing at desk
+   https://unsplash.com/photos/photo-1434030216411-0b793f4b4173
+
+2. calendar-plan.jpg   — Calendar / weekly planning
+   https://unsplash.com/photos/photo-1506784365847-bbad939e9335
+
+3. focus-work.jpg      — Focused work with laptop and notes
+   https://unsplash.com/photos/photo-1454165804606-c3d57bc86b40
+
+4. task-list.jpg       — Digital task list on device
+   https://unsplash.com/photos/photo-1611224923853-80b023f02d71
+
+5. paw-pet.jpg         — Motivated person / stay on track theme
+   https://unsplash.com/photos/photo-1450778869180-41d0601e046e
+
+Background images (tracker page styling)
+6. pawtrack-bg.jpg     — Page background on tracker.html
+   https://unsplash.com/photos/photo-1548199973-03cce0bbc87b
+
+7. pawtrack-column.jpg — Kanban column background
+   https://unsplash.com/photos/photo-1583337130417-3346a1be7dee
+
+License: Unsplash License — free for commercial and non-commercial use.
+https://unsplash.com/license

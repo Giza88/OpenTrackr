@@ -1,23 +1,4 @@
-/*
-    styles.css - OpenTrackr
-
-    Purpose: Centralized styling and lightweight design system used by the
-    OpenTrackr application. Keep changes focused on variables and component
-    layout. Many class names are referenced from `app.js`, so avoid renaming
-    IDs/classes unless you update the JS accordingly.
-
-    Sections:
-        - :root variables (light/dark themes)
-        - Global element styles
-        - Header / Controls
-        - Main content / Kanban board
-        - Task card & meta
-        - Modals & forms
-        - List view
-        - Snackbar / FAB / Responsive rules
-
-    Tip: Use the CSS variables at the top to tweak colors, spacing or typography.
-*/
+/* OpenTrackr styles */
 
 :root {
         /* Light Theme */
@@ -63,6 +44,23 @@
     box-sizing: border-box;
 }
 
+.skip-link {
+    position: absolute;
+    top: -3rem;
+    left: 1rem;
+    z-index: 10000;
+    padding: 0.5rem 1rem;
+    background-color: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.skip-link:focus {
+    top: 1rem;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     background-color: var(--bg-secondary);
@@ -71,9 +69,6 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Page background image (user-provided).
-   Updated to use the second image `pawtrack_background2.jpg` saved in `public/images`.
-   Vite serves files from `public/` at the site root, so use an absolute path. */
 body.tracker-page {
     background-image: url('../images/pawtrack-bg.jpg');
     background-size: cover;
@@ -199,15 +194,6 @@ body.tracker-page::before {
 .kanban-board {
     margin-top: 2rem;
 }
-    .btn-secondary {
-         background: transparent;
-         color: var(--muted);
-         border: 1px solid rgba(255,255,255,0.04);
-         padding: 0.5rem 1rem;
-         border-radius: 8px;
-         font-size: 0.95rem;
-         cursor: pointer;
-    }
 
 .kanban-columns {
     display: grid;
@@ -224,8 +210,7 @@ body.tracker-page::before {
     min-height: 400px;
     display: flex;
     flex-direction: column;
-    /* Use the user-provided image as the background for each column.
-       Vite serves files in `public/` at the root, so the path is /images/... */
+    /* Kanban column background */
     position: relative;
     overflow: hidden;
     background-image: url('../images/pawtrack-column.jpg');
@@ -247,14 +232,6 @@ body.tracker-page::before {
     position: relative;
     z-index: 1;
 }
-    .column-header {
-         display: flex;
-         justify-content: space-between;
-         align-items: center;
-         margin-bottom: var(--space-md);
-         padding-bottom: var(--space-sm);
-         border-bottom: 1px solid var(--border);
-    }
 
 .column-header {
     display: flex;
@@ -272,7 +249,6 @@ body.tracker-page::before {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    
 }
 
 .column-count {
@@ -283,25 +259,21 @@ body.tracker-page::before {
     font-size: 0.875rem;
 }
 
+.task-tag {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    border-radius: 999px;
+    background: rgba(108, 92, 231, 0.12);
+    color: var(--accent);
+    font-weight: 600;
+    margin-right: 0.5rem;
+}
 
-        .task-tag {
-            display: inline-block;
-            padding: 4px 8px;
-            font-size: 0.75rem;
-            border-radius: 999px;
-            background: rgba(108,92,231,0.12);
-            color: var(--accent);
-            font-weight: 600;
-            margin-right: 0.5rem;
-        }
 .column-actions {
     display: flex;
     gap: 0.25rem;
 }
-    .task-card:hover {
-         box-shadow: 0 20px 40px rgba(2,6,23,0.7);
-         transform: translateY(-6px);
-    }
 
 .btn-small {
     background: none;
@@ -703,7 +675,7 @@ body.tracker-page::before {
     font-style: italic;
 }
 
-/* ===== Shared site layout (all pages) ===== */
+/* Site layout */
 .page-wrapper {
     min-height: 100vh;
     display: flex;
@@ -758,6 +730,11 @@ body.tracker-page::before {
 .site-nav a.active {
     background-color: var(--accent);
     color: #fff;
+}
+
+.site-theme-toggle {
+    font-size: 1.1rem;
+    padding: 0.45rem 0.75rem;
 }
 
 .site-content {
@@ -988,6 +965,13 @@ body.tracker-page::before {
 @media (max-width: 768px) {
     .site-header-inner {
         padding: 1rem;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .site-nav {
+        width: 100%;
+        justify-content: center;
     }
 
     .site-content {
@@ -998,12 +982,36 @@ body.tracker-page::before {
         padding: 1.25rem;
     }
 
+    .content-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .register-form {
+        max-width: 100%;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+    }
+
     .tracker-toolbar {
         padding: 1rem;
     }
+
+    .main-content {
+        padding: 1rem;
+    }
+
+    .task-planner-table-wrap {
+        overflow-x: auto;
+    }
 }
 
-/* ===== Planning workspace (tracker page) ===== */
+/* Planning workspace */
 .planning-workspace {
     margin-top: 2rem;
     padding-top: 2rem;

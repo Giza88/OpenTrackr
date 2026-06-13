@@ -1,6 +1,3 @@
-/**
- * OpenTrackr home page — interactive "Why Planning Works" gallery
- */
 (function () {
     const topics = {
         'daily-desk': {

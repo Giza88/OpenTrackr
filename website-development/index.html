@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OpenTrackr | Plan Your Day &amp; Week</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="home-page">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <div class="page-wrapper">
         <header class="site-header">
             <div class="site-header-inner">
@@ -15,11 +17,14 @@
                     <a href="index.html" class="active">Home</a>
                     <a href="tracker.html">Task Tracker</a>
                     <a href="register.html">Register</a>
+                    <button id="themeToggle" class="btn-icon site-theme-toggle" type="button" title="Toggle theme">
+                        <span id="themeIcon">🌙</span>
+                    </button>
                 </nav>
             </div>
         </header>
 
-        <main class="site-content">
+        <main id="main-content" class="site-content">
             <section class="content-section hero-section">
                 <h2>Plan Your Day and Week with OpenTrackr</h2>
                 <p class="intro-text">
@@ -166,6 +171,7 @@
         </div>
     </div>
 
+    <script src="theme.js"></script>
     <script src="home.js"></script>
 </body>
 </html>

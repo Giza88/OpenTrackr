@@ -1,7 +1,4 @@
-/**
- * Registration form validation for OpenTrackr (BIT503 Assessment 3)
- * Saves account details to localStorage (password is never stored).
- */
+// Registration form validation - saves account to localStorage (password not stored)
 document.addEventListener('DOMContentLoaded', function () {
     const USER_KEY = 'openTrackr_user';
     const form = document.getElementById('registrationForm');
@@ -12,8 +9,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!form || !messageEl) return;
 
-    if (loadUser()) {
-        showAccountPanel(loadUser());
+    const existingUser = loadUser();
+    if (existingUser) {
+        showAccountPanel(existingUser);
     }
 
     form.addEventListener('submit', function (event) {

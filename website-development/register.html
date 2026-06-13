@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register | OpenTrackr</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <div class="page-wrapper">
         <header class="site-header">
             <div class="site-header-inner">
@@ -15,11 +17,14 @@
                     <a href="index.html">Home</a>
                     <a href="tracker.html">Task Tracker</a>
                     <a href="register.html" class="active">Register</a>
+                    <button id="themeToggle" class="btn-icon site-theme-toggle" type="button" title="Toggle theme">
+                        <span id="themeIcon">🌙</span>
+                    </button>
                 </nav>
             </div>
         </header>
 
-        <main class="site-content">
+        <main id="main-content" class="site-content">
             <section class="content-section">
                 <h2>Create Your OpenTrackr Account</h2>
                 <p class="intro-text">
@@ -57,20 +62,23 @@
                     <div class="form-group">
                         <label for="firstName">First Name</label>
                         <input type="text" id="firstName" name="firstName" required
+                            autocomplete="given-name"
                             pattern="[A-Za-z]+" title="First name must contain letters only">
                     </div>
                     <div class="form-group">
                         <label for="lastName">Last Name</label>
                         <input type="text" id="lastName" name="lastName" required
+                            autocomplete="family-name"
                             pattern="[A-Za-z]+" title="Last name must contain letters only">
                     </div>
                     <div class="form-group">
                         <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" required>
+                        <input type="email" id="email" name="email" required autocomplete="email">
                     </div>
                     <div class="form-group">
                         <label for="mobile">Mobile Number</label>
-                        <input type="text" id="mobile" name="mobile" required
+                        <input type="tel" id="mobile" name="mobile" required
+                            inputmode="numeric" autocomplete="tel"
                             pattern="[0-9]{10}" maxlength="10" title="Mobile number must be 10 digits">
                     </div>
                     <div class="form-group">
@@ -97,6 +105,7 @@
         </footer>
     </div>
 
+    <script src="theme.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

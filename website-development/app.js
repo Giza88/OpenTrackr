@@ -1,29 +1,5 @@
 // OpenTrackr Application
 class TaskTracker {
-        /*
-            OpenTrackr - Single-file app logic
-
-            Responsibilities:
-                - Manage tasks and categories in-memory and in localStorage
-                - Render UI (Kanban & List) into the DOM via string templates
-                - Handle modals, focus trapping, and keyboard accessibility
-                - Support drag-and-drop between columns
-                - Schedule browser notifications for reminders
-                - Provide an undo snackbar for deletes
-
-            Quick map (where to look):
-                - constructor: initial properties + debounced save
-                - init(): load storage, wire events, initial render
-                - LocalStorage Management: load/save/restore
-                - Task Management: add/update/delete/restore
-                - Category Management: add/update/delete/reorder
-                - View Management: toggleView, toggleTheme
-                - Notification Management: schedule/cancel/restore
-                - Event Listeners: setupEventListeners()
-                - Modal Management: open/close forms
-                - Rendering: render(), renderKanban(), renderList(), renderTaskCard(), renderListItem()
-                - Drag & Drop: setupDragAndDrop() and handlers
-        */
     constructor() {
         this.tasks = [];
         this.categories = ['To Do', 'In Progress', 'Done'];
@@ -51,15 +27,6 @@ class TaskTracker {
 
         this.init();
     }
-
-    /**
-     * Initialize the application
-     * - Loads saved data from localStorage
-     * - Requests notifications (deferred until user enables)
-     * - Wires up DOM event listeners
-     * - Performs the initial render
-     * - Starts periodic checks (e.g., overdue tasks)
-     */
     init() {
         this.loadFromStorage();
         this.requestNotificationPermission();
@@ -69,19 +36,10 @@ class TaskTracker {
     }
 
     // LocalStorage Management
-    /**
-     * Persist current app state to localStorage.
-     * Uses a debounced wrapper (`this.debouncedSave`) to batch writes.
-     */
     saveToStorage() {
         // use debounced save to reduce write frequency
         if (this.debouncedSave) this.debouncedSave();
     }
-
-    /**
-     * Load app state from localStorage into memory.
-     * Restores tasks, categories, preferences and category colors.
-     */
     loadFromStorage() {
         const savedTasks = localStorage.getItem('taskTracker_tasks');
         const savedCategories = localStorage.getItem('taskTracker_categories');
@@ -106,10 +64,6 @@ class TaskTracker {
     }
 
     // Utility: debounce
-    /**
-     * Returns a debounced version of `fn` that delays invocation by `ms` milliseconds.
-     * Useful for reducing the frequency of expensive operations (like localStorage writes).
-     */
     debounce(fn, ms = 300) {
         let t;
         return (...args) => {
@@ -119,11 +73,6 @@ class TaskTracker {
     }
 
     // Task Management
-    /**
-     * Create a new task object and persist it.
-     * taskData: { title, description, category, dueDate, notification }
-     * Returns the created task object.
-     */
     addTask(taskData) {
         const task = {
             id: Date.now().toString(),
@@ -145,11 +94,6 @@ class TaskTracker {
 
         return task;
     }
-
-    /**
-     * Update a task by ID with the provided `updates` object.
-     * Handles notification rescheduling when dueDate/notification/completed change.
-     */
     updateTask(taskId, updates) {
         const taskIndex = this.tasks.findIndex(t => t.id === taskId);
         if (taskIndex === -1) return;
@@ -168,11 +112,6 @@ class TaskTracker {
 
         return this.tasks[taskIndex];
     }
-
-    /**
-     * Delete a task by ID.
-     * Stores the deleted task in `this.lastDeleted` to allow undo.
-     */
     deleteTask(taskId) {
         const taskIndex = this.tasks.findIndex(t => t.id === taskId);
         if (taskIndex === -1) return;
@@ -184,10 +123,6 @@ class TaskTracker {
         this.render();
         this.showUndoSnackbar(`Deleted: ${task.title}`, () => this.restoreDeletedTask());
     }
-
-    /**
-     * Restore the most recently deleted task (undo operation).
-     */
     restoreDeletedTask() {
         if (!this.lastDeleted) return;
         this.tasks.push(this.lastDeleted);
@@ -195,11 +130,6 @@ class TaskTracker {
         this.saveToStorage();
         this.render();
     }
-
-    /**
-     * Show the transient snackbar with an undo button.
-     * `undoCallback` is executed if the user clicks Undo.
-     */
     showUndoSnackbar(message, undoCallback) {
         const sb = document.getElementById('snackbar');
         if (!sb) return;
@@ -222,17 +152,9 @@ class TaskTracker {
             this.undoTimeoutId = null;
         }, 6000);
     }
-
-    /**
-     * Move a task to a different category (used by drag/drop).
-     */
     moveTask(taskId, newCategory) {
         this.updateTask(taskId, { category: newCategory });
     }
-
-    /**
-     * Toggle the completed state of a task.
-     */
     toggleComplete(taskId) {
         const task = this.tasks.find(t => t.id === taskId);
         if (!task) return;
@@ -241,9 +163,6 @@ class TaskTracker {
     }
 
     // Category Management
-    /**
-     * Add a new category name and assign a color.
-     */
     addCategory(name) {
         if (!name || this.categories.includes(name)) return;
         this.categories.push(name);
@@ -258,10 +177,6 @@ class TaskTracker {
             this.categoryColors[name] = this.palette[index % this.palette.length];
         }
     }
-
-    /**
-     * Rename a category and migrate tasks that used the old name.
-     */
     updateCategory(oldName, newName) {
         const index = this.categories.indexOf(oldName);
         if (index === -1 || this.categories.includes(newName)) return;
@@ -276,10 +191,6 @@ class TaskTracker {
         this.saveToStorage();
         this.render();
     }
-
-    /**
-     * Delete a category and migrate its tasks to a remaining category.
-     */
     deleteCategory(name) {
         if (this.categories.length <= 1) {
             alert('You must have at least one category!');
@@ -301,10 +212,6 @@ class TaskTracker {
         this.saveToStorage();
         this.render();
     }
-
-    /**
-     * Reorder categories array and persist the change.
-     */
     reorderCategory(fromIndex, toIndex) {
         const [moved] = this.categories.splice(fromIndex, 1);
         this.categories.splice(toIndex, 0, moved);
@@ -313,9 +220,6 @@ class TaskTracker {
     }
 
     // View Management
-    /**
-     * Toggle between Kanban and List view and re-render.
-     */
     toggleView() {
         const modes = ['kanban', 'list', 'calendar'];
         const currentIndex = modes.indexOf(this.viewMode);
@@ -324,10 +228,6 @@ class TaskTracker {
         this.render();
         this.updateViewIcon();
     }
-
-    /**
-     * Update the small UI icon that indicates the current view mode.
-     */
     updateViewIcon() {
         const icon = document.getElementById('viewIcon');
         if (!icon) return;
@@ -335,40 +235,23 @@ class TaskTracker {
         else if (this.viewMode === 'list') icon.textContent = '📋';
         else icon.textContent = '📅';
     }
-
-    /**
-     * Toggle light/dark theme by setting `data-theme` on <html>.
-     */
     toggleTheme() {
         this.theme = this.theme === 'light' ? 'dark' : 'light';
         document.documentElement.setAttribute('data-theme', this.theme);
         this.saveToStorage();
         this.updateThemeIcon();
     }
-
-    /**
-     * Refresh the theme icon to reflect the current theme.
-     */
     updateThemeIcon() {
         const icon = document.getElementById('themeIcon');
         icon.textContent = this.theme === 'light' ? '🌙' : '☀️';
     }
 
     // Notification Management
-    /**
-     * Placeholder for requesting Notification permission.
-     * We avoid auto-requesting; the user toggles notifications in the settings.
-     */
     async requestNotificationPermission() {
         if ('Notification' in window && Notification.permission === 'default') {
             // Don't request automatically, wait for user to enable in settings
         }
     }
-
-    /**
-     * Schedule a browser notification for the given task.
-     * Stores timeout IDs in `this.notificationTimers` so they can be cancelled.
-     */
     scheduleNotification(task) {
         if (!task.dueDate || !task.notification || task.completed) return;
 
@@ -387,10 +270,6 @@ class TaskTracker {
 
         this.notificationTimers.set(task.id, timerId);
     }
-
-    /**
-     * Cancel a scheduled notification for a task by clearing the timeout.
-     */
     cancelNotification(taskId) {
         const timerId = this.notificationTimers.get(taskId);
         if (timerId) {
@@ -398,11 +277,6 @@ class TaskTracker {
             this.notificationTimers.delete(taskId);
         }
     }
-
-    /**
-     * Recreate notification timers for tasks stored in localStorage.
-     * Called on initialization after loading tasks.
-     */
     restoreNotifications() {
         this.tasks.forEach(task => {
             if (task.notification && task.dueDate && !task.completed) {
@@ -410,20 +284,12 @@ class TaskTracker {
             }
         });
     }
-
-    /**
-     * Periodic background check to refresh UI (used to update overdue styles).
-     */
     setupNotificationCheck() {
         // Check for overdue tasks every minute
         setInterval(() => {
             this.render(); // Re-render to update overdue styling
         }, 60000);
     }
-
-    /**
-     * Immediately fire a browser notification for the provided task.
-     */
     showNotification(task) {
         if (!this.notificationsEnabled || Notification.permission !== 'granted') return;
 
@@ -437,19 +303,12 @@ class TaskTracker {
     }
 
     // Utility Functions
-    /**
-     * Return true if the task has a dueDate in the past and is not completed.
-     */
     isOverdue(task) {
         if (!task.dueDate || task.completed) return false;
         return new Date(task.dueDate) < new Date();
     }
 
     // Focus trap for modals
-    /**
-     * Keep keyboard focus inside the provided modal element until it is closed.
-     * Handles Tab and Shift+Tab cycling and Escape to close.
-     */
     trapFocus(modal) {
         if (!modal) return;
         const focusable = modal.querySelectorAll('a[href], button:not([disabled]), textarea, input, select');
@@ -479,10 +338,6 @@ class TaskTracker {
         // ensure initial focus
         first.focus();
     }
-
-    /**
-     * Format a stored ISO date string into a readable local datetime string.
-     */
     formatDate(dateString) {
         if (!dateString) return '';
         const date = new Date(dateString);
@@ -490,10 +345,6 @@ class TaskTracker {
     }
 
     // Event Listeners Setup
-    /**
-     * Wire the global DOM event handlers for buttons, forms, modals, and settings.
-     * Keeps the constructor small and centralizes DOM wiring.
-     */
     setupEventListeners() {
         // Add Task Button
         document.getElementById('addTaskBtn').addEventListener('click', () => {
@@ -584,10 +435,6 @@ class TaskTracker {
     }
 
     // Modal Management
-    /**
-     * Open the Add/Edit Task modal and populate fields when editing.
-     * Stores the previously focused element to restore focus when modal closes.
-     */
     openTaskModal(task = null, presetDueDate = null) {
         this.currentEditingTask = task;
         const modal = document.getElementById('taskModal');
@@ -616,10 +463,6 @@ class TaskTracker {
         modal.classList.remove('hidden');
         this.trapFocus(modal);
     }
-
-    /**
-     * Close the task modal and reset form state.
-     */
     closeTaskModal() {
         const modal = document.getElementById('taskModal');
         modal.classList.add('hidden');
@@ -630,10 +473,6 @@ class TaskTracker {
             this.previousActiveElement.focus();
         }
     }
-
-    /**
-     * Open settings modal and populate current settings values.
-     */
     openSettingsModal() {
         document.getElementById('enableNotifications').checked = this.notificationsEnabled;
         this.renderSettings();
@@ -643,10 +482,6 @@ class TaskTracker {
         modal.classList.remove('hidden');
         this.trapFocus(modal);
     }
-
-    /**
-     * Close settings modal and restore focus to previous element.
-     */
     closeSettingsModal() {
         const modal = document.getElementById('settingsModal');
         modal.classList.add('hidden');
@@ -655,11 +490,6 @@ class TaskTracker {
             this.previousActiveElement.focus();
         }
     }
-
-    /**
-     * Read the form values and either create a new task or update an existing one.
-     * Performs simple validation (title required).
-     */
     handleTaskSubmit() {
         const formData = {
             title: document.getElementById('taskTitle').value.trim(),
@@ -683,21 +513,12 @@ class TaskTracker {
         this.closeTaskModal();
         this.render();
     }
-
-    /**
-     * Populate the category <select> used in the task form.
-     */
     populateCategorySelect() {
         const select = document.getElementById('taskCategory');
         select.innerHTML = this.categories.map(cat => 
             `<option value="${cat}">${cat}</option>`
         ).join('');
     }
-
-    /**
-     * Render the category management UI inside the Settings modal.
-     * Uses inline onchange/onclick handlers that call `app.*` helpers.
-     */
     renderSettings() {
         const categoryList = document.getElementById('categoryList');
         categoryList.innerHTML = this.categories.map((cat, index) => `
@@ -710,10 +531,6 @@ class TaskTracker {
             </div>
         `).join('');
     }
-
-    /**
-     * Helper used by the inline onchange handler to rename categories.
-     */
     updateCategoryFromInput(oldName, newName) {
         if (newName && newName !== oldName) {
             this.updateCategory(oldName, newName);
@@ -721,10 +538,6 @@ class TaskTracker {
     }
 
     // Rendering
-    /**
-     * Top-level render function: dispatches to Kanban or List rendering
-     * based on `this.viewMode`.
-     */
     render() {
         if (this.viewMode === 'kanban') {
             this.renderKanban();
@@ -734,11 +547,6 @@ class TaskTracker {
             this.renderCalendar();
         }
     }
-
-    /**
-     * Build the Kanban columns and task cards as HTML strings and inject into DOM.
-     * After injection we call setupDragAndDrop() to attach handlers to created nodes.
-     */
     renderKanban() {
         document.getElementById('kanbanView').classList.remove('hidden');
         document.getElementById('listView').classList.add('hidden');
@@ -777,10 +585,6 @@ class TaskTracker {
 
         this.setupDragAndDrop();
     }
-
-    /**
-     * Render calendar view with task due dates using FullCalendar.
-     */
     renderCalendar() {
         document.getElementById('kanbanView').classList.add('hidden');
         document.getElementById('listView').classList.add('hidden');
@@ -823,10 +627,6 @@ class TaskTracker {
             events.forEach(event => this.calendarInstance.addEvent(event));
         }
     }
-
-    /**
-     * Render the alternate List view grouped by category.
-     */
     renderList() {
         document.getElementById('kanbanView').classList.add('hidden');
         document.getElementById('listView').classList.remove('hidden');
@@ -853,12 +653,6 @@ class TaskTracker {
             </div>
         `).join('');
     }
-
-    /**
-     * Return an HTML string for a single task card used in the Kanban board.
-     * The string includes: title, category tag, description, due date, notification,
-     * edit/delete buttons and a complete checkbox.
-     */
     renderTaskCard(task) {
         const overdue = this.isOverdue(task);
         return `
@@ -891,10 +685,6 @@ class TaskTracker {
             </div>
         `;
     }
-
-    /**
-     * Return an HTML string for a single task row in the List view.
-     */
     renderListItem(task) {
         const overdue = this.isOverdue(task);
         return `
@@ -921,10 +711,6 @@ class TaskTracker {
             </div>
         `;
     }
-
-    /**
-     * Escape text for safe HTML insertion by using a detached DOM node.
-     */
     escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;
@@ -932,10 +718,6 @@ class TaskTracker {
     }
 
     // Drag and Drop
-    /**
-     * Attach drag/drop listeners to the rendered task cards and column containers.
-     * These handlers use HTML5 drag & drop APIs and update task.category on drop.
-     */
     setupDragAndDrop() {
         const taskCards = document.querySelectorAll('.task-card');
         const columns = document.querySelectorAll('.tasks-container');
@@ -952,54 +734,28 @@ class TaskTracker {
             column.addEventListener('dragleave', this.handleDragLeave.bind(this));
         });
     }
-
-    /**
-     * dragstart handler: store the task id in the dataTransfer payload
-     * and add a visual "dragging" class.
-     */
     handleDragStart(e) {
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setData('text/plain', e.currentTarget.dataset.taskId);
         e.currentTarget.classList.add('dragging');
     }
-
-    /**
-     * dragend handler: clean up dragging state and column highlights.
-     */
     handleDragEnd(e) {
         e.currentTarget.classList.remove('dragging');
         document.querySelectorAll('.kanban-column').forEach(col => {
             col.classList.remove('drag-over');
         });
     }
-
-    /**
-     * dragover handler: required to allow dropping (preventDefault).
-     */
     handleDragOver(e) {
         e.preventDefault();
         e.dataTransfer.dropEffect = 'move';
     }
-
-    /**
-     * dragenter handler: visually indicate a column is an available drop target.
-     */
     handleDragEnter(e) {
         e.preventDefault();
         e.currentTarget.closest('.kanban-column').classList.add('drag-over');
     }
-
-    /**
-     * dragleave handler: remove visual drop indicator from column.
-     */
     handleDragLeave(e) {
         e.currentTarget.closest('.kanban-column').classList.remove('drag-over');
     }
-
-    /**
-     * drop handler: read the dragged task id and move the task into the
-     * column's category, then re-render.
-     */
     handleDrop(e) {
         e.preventDefault();
         const taskId = e.dataTransfer.getData('text/plain');
@@ -1012,11 +768,9 @@ class TaskTracker {
     }
 }
 
-// Initialize the app and expose it on `window` so inline handlers work
 window.TaskTracker = TaskTracker;
 let app;
 
-// Initialize immediately if DOM is ready, else wait for DOMContentLoaded
 function initApp() {
     if (!document.getElementById('kanbanColumns')) return;
     if (!window.app) {
@@ -1025,13 +779,10 @@ function initApp() {
     }
 }
 
-// Approach 1: DOMContentLoaded (fires when HTML is parsed)
 document.addEventListener('DOMContentLoaded', initApp);
 
-// Approach 2: Fallback via setTimeout (if DOMContentLoaded already fired)
 setTimeout(initApp, 0);
 
-// Approach 3: Interactive state (DOM ready but resources may still load)
 if (document.readyState !== 'loading') {
     setTimeout(initApp, 0);
 }

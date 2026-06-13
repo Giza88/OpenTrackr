@@ -1,7 +1,3 @@
-/**
- * OpenTrackr — quick to-do list and fill-in planner templates
- * Persists to localStorage on the tracker page.
- */
 (function () {
     const TODO_KEY = 'openTrackr_quickTodos';
     const DAILY_KEY = 'openTrackr_dailyPlanner';

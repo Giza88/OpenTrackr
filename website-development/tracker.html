@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Tracker | OpenTrackr</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css">
 </head>
 <body class="tracker-page">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <div class="page-wrapper">
         <header class="site-header">
             <div class="site-header-inner">
@@ -36,7 +38,6 @@
                 </div>
             </div>
 
-            <!-- Settings Modal -->
             <div id="settingsModal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="settingsTitle">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -62,7 +63,6 @@
                 </div>
             </div>
 
-            <!-- Add Task Modal -->
             <div id="taskModal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modalTitle">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -102,7 +102,7 @@
                 </div>
             </div>
 
-            <main class="main-content">
+            <main id="main-content" class="main-content">
                 <div class="add-task-section">
                     <button id="addTaskBtn" class="btn-primary btn-large" type="button">➕ Add New Task</button>
                 </div>
