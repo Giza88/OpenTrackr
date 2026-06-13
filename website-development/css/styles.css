@@ -1,41 +1,44 @@
 /* OpenTrackr styles */
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
 
 :root {
-        /* Light Theme */
-        --bg-primary: #ffffff;
-    --bg-secondary: #f5f7fa;
-    --bg-tertiary: #e9ecef;
-    --text-primary: #2d3748;
+    /* Light theme */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f0f4f8;
+    --bg-tertiary: #e2e8f0;
+    --text-primary: #1a202c;
     --text-secondary: #4a5568;
     --text-muted: #718096;
-    --border-color: #e2e8f0;
-    --shadow: rgba(0, 0, 0, 0.1);
-    --accent: #3182ce;
-    --accent-hover: #2c5aa0;
-    --success: #48bb78;
-    --danger: #f56565;
-    --warning: #ed8936;
-    --overdue: #e53e3e;
+    --border-color: #cbd5e0;
+    --shadow: rgba(0, 0, 0, 0.12);
+    --accent: #0284c7;
+    --accent-bright: #0ea5e9;
+    --accent-hover: #0369a1;
+    --success: #22c55e;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --overdue: #dc2626;
     --card-bg: #ffffff;
 }
 
 [data-theme="dark"] {
-    /* Dark Theme */
-    --bg-primary: #1a202c;
-    --bg-secondary: #2d3748;
-    --bg-tertiary: #4a5568;
-    --text-primary: #f7fafc;
-    --text-secondary: #e2e8f0;
-    --text-muted: #a0aec0;
-    --border-color: #4a5568;
-    --shadow: rgba(0, 0, 0, 0.3);
-    --accent: #63b3ed;
-    --accent-hover: #4299e1;
-    --success: #68d391;
-    --danger: #fc8181;
-    --warning: #f6ad55;
-    --overdue: #fc8181;
-    --card-bg: #2d3748;
+    /* Dark theme */
+    --bg-primary: #1e293b;
+    --bg-secondary: #0f172a;
+    --bg-tertiary: #334155;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --border-color: #475569;
+    --shadow: rgba(0, 0, 0, 0.4);
+    --accent: #38bdf8;
+    --accent-bright: #7dd3fc;
+    --accent-hover: #0ea5e9;
+    --success: #4ade80;
+    --danger: #f87171;
+    --warning: #fbbf24;
+    --overdue: #fca5a5;
+    --card-bg: #1e293b;
 }
 
 * {
@@ -70,7 +73,7 @@ body {
 }
 
 body.tracker-page {
-    background-image: url('../images/pawtrack-bg.jpg');
+    background-image: url('../images/OpenTrackr.png');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -259,16 +262,16 @@ body.tracker-page::before {
     font-size: 0.875rem;
 }
 
-.task-tag {
-    display: inline-block;
-    padding: 4px 8px;
-    font-size: 0.75rem;
-    border-radius: 999px;
-    background: rgba(108, 92, 231, 0.12);
-    color: var(--accent);
-    font-weight: 600;
-    margin-right: 0.5rem;
-}
+        .task-tag {
+            display: inline-block;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            border-radius: 999px;
+            background: rgba(14, 165, 233, 0.15);
+            color: var(--accent-bright);
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
 
 .column-actions {
     display: flex;
@@ -702,13 +705,32 @@ body.tracker-page::before {
 }
 
 .site-title {
-    font-size: 1.5rem;
-    font-weight: 600;
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.85rem;
+    font-weight: 400;
+    line-height: 1.2;
 }
 
 .site-title a {
-    color: var(--text-primary);
+    color: var(--accent-bright);
     text-decoration: none;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+    transition: color 0.2s ease;
+}
+
+.site-title a:hover,
+.site-title a:focus {
+    color: var(--accent);
+}
+
+[data-theme="dark"] .site-title a {
+    color: #bae6fd;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.45);
+}
+
+[data-theme="dark"] .site-title a:hover,
+[data-theme="dark"] .site-title a:focus {
+    color: var(--accent-bright);
 }
 
 .site-nav {
@@ -927,25 +949,67 @@ body.tracker-page::before {
 .tracker-toolbar {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 1rem 2rem 0;
+    padding: 1rem 1.25rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
+    background: rgba(255, 255, 255, 0.82);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 16px var(--shadow);
+    backdrop-filter: blur(8px);
+}
+
+[data-theme="dark"] .tracker-toolbar {
+    background: rgba(15, 23, 42, 0.85);
+    border-color: rgba(71, 85, 105, 0.6);
 }
 
 .tracker-heading {
-    font-size: 1.25rem;
-    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-bright);
+    letter-spacing: 0.02em;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .tracker-heading {
+    color: #bae6fd;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
 .calendar-view {
     margin-top: 2rem;
-    background-color: var(--bg-primary);
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 2px 8px var(--shadow);
+    position: relative;
+    overflow: hidden;
+    background-image: url('../images/OpenTrackr.png');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.calendar-view::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.88);
+    border-radius: 12px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+[data-theme="dark"] .calendar-view::before {
+    background: rgba(26, 32, 44, 0.88);
+}
+
+.calendar-view > * {
+    position: relative;
+    z-index: 1;
 }
 
 #fullCalendar {
@@ -1233,5 +1297,41 @@ body.tracker-page::before {
     font-size: 0.875rem;
     color: var(--text-muted);
     margin-bottom: 1rem;
+}
+
+.auth-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    max-width: 480px;
+}
+
+.auth-tab {
+    flex: 1;
+    padding: 0.65rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.auth-tab:hover {
+    border-color: var(--accent-bright);
+    color: var(--accent-bright);
+}
+
+.auth-tab.active {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+.auth-panel {
+    max-width: 480px;
 }
 
