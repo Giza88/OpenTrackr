@@ -24,8 +24,35 @@
                 <h2>Create Your OpenTrackr Account</h2>
                 <p class="intro-text">
                     Register to save your planning preferences and stay organised across your day and week.
+                    Your account is stored locally in this browser — no server required.
                 </p>
 
+                <div id="accountPanel" class="account-panel hidden" aria-live="polite">
+                    <h3>Welcome back!</h3>
+                    <p class="account-greeting">You are signed in on this device.</p>
+                    <dl class="account-details">
+                        <div class="account-row">
+                            <dt>Name</dt>
+                            <dd id="accountName"></dd>
+                        </div>
+                        <div class="account-row">
+                            <dt>Email</dt>
+                            <dd id="accountEmail"></dd>
+                        </div>
+                        <div class="account-row">
+                            <dt>Mobile</dt>
+                            <dd id="accountMobile"></dd>
+                        </div>
+                        <div class="account-row">
+                            <dt>Registered</dt>
+                            <dd id="accountRegistered"></dd>
+                        </div>
+                    </dl>
+                    <p class="account-note">Passwords are not saved locally for your security.</p>
+                    <button type="button" id="logoutBtn" class="btn-secondary">Log out</button>
+                </div>
+
+                <div id="registrationSection">
                 <form id="registrationForm" class="register-form">
                     <div class="form-group">
                         <label for="firstName">First Name</label>
@@ -60,6 +87,7 @@
                         <button type="submit" class="btn-primary">Submit</button>
                     </div>
                 </form>
+                </div>
                 <p id="formMessage" role="status" aria-live="polite"></p>
             </section>
         </main>
