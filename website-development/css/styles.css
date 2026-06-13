@@ -1335,3 +1335,48 @@ body.tracker-page::before {
     max-width: 480px;
 }
 
+.field-hint {
+    margin-top: 0.35rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.calendar-connect {
+    margin: 1.25rem 0 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.calendar-connect h4 {
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.calendar-help,
+.calendar-import-help {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+}
+
+.calendar-import-help {
+    padding: 0.75rem;
+    background-color: var(--bg-primary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.calendar-export-msg {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.calendar-export-msg.success {
+    color: var(--success);
+}
+
+.calendar-export-msg.error {
+    color: var(--danger);
+}
+

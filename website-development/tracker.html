@@ -26,6 +26,9 @@
             <div class="tracker-toolbar">
                 <h2 class="tracker-heading">Your Tasks</h2>
                 <div class="header-controls">
+                    <button id="exportCalendarBtn" class="btn-icon" title="Export tasks to calendar (.ics)" type="button">
+                        📤
+                    </button>
                     <button id="viewToggle" class="btn-icon" title="Toggle View" type="button">
                         <span id="viewIcon">📅</span>
                     </button>
@@ -205,6 +208,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+    <script src="calendar-export.js"></script>
     <script src="app.js"></script>
     <script src="planner.js"></script>
 </body>

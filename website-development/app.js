@@ -378,6 +378,25 @@ class TaskTracker {
             this.toggleTheme();
         });
 
+        const exportCalendarBtn = document.getElementById('exportCalendarBtn');
+        if (exportCalendarBtn && window.OpenTrackrCalendar) {
+            exportCalendarBtn.addEventListener('click', () => {
+                const result = OpenTrackrCalendar.exportTasks();
+                const sb = document.getElementById('snackbar');
+                if (!sb) {
+                    alert(result.message);
+                    return;
+                }
+                const msg = sb.querySelector('.snackbar-message');
+                const undoBtn = document.getElementById('snackbarUndo');
+                msg.textContent = result.message;
+                if (undoBtn) undoBtn.classList.toggle('hidden', !result.ok);
+                sb.classList.remove('hidden');
+                clearTimeout(this.exportSnackbarTimeout);
+                this.exportSnackbarTimeout = setTimeout(() => sb.classList.add('hidden'), 5000);
+            });
+        }
+
         // Settings
         document.getElementById('settingsBtn').addEventListener('click', () => {
             this.openSettingsModal();

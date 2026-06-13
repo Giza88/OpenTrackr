@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const mobile = document.getElementById('mobile').value.trim();
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
+        const calendarProvider = document.getElementById('calendarProvider').value;
 
         if (password !== confirmPassword) {
             showMessage('Password and confirm password do not match. Please try again.', 'error');
@@ -53,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
             email: email,
             mobile: mobile,
             password: password,
+            calendarProvider: calendarProvider,
             registeredAt: existing && existing.email === email && existing.registeredAt
                 ? existing.registeredAt
                 : new Date().toISOString()
@@ -64,7 +66,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const isUpdate = existing && existing.email === email;
         showMessage(
             (isUpdate ? 'Account updated! Welcome back, ' : 'Registration successful! Welcome, ') +
-            firstName + ' ' + lastName + '. Your account is saved on this device.',
+            firstName + ' ' + lastName + '. Your account is saved on this device. ' +
+            'Use Export tasks to calendar below to connect ' +
+            OpenTrackrCalendar.getProviderLabel(calendarProvider) + '.',
             'success'
         );
 
@@ -132,6 +136,23 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    var exportCalendarBtn = document.getElementById('exportCalendarBtn');
+    if (exportCalendarBtn) {
+        exportCalendarBtn.addEventListener('click', handleCalendarExport);
+    }
+
+    function handleCalendarExport() {
+        var exportMessage = document.getElementById('calendarExportMessage');
+        var result = OpenTrackrCalendar.exportTasks();
+
+        if (exportMessage) {
+            exportMessage.textContent = result.message;
+            exportMessage.className = result.ok ? 'success' : 'error';
+        } else if (!result.ok) {
+            alert(result.message);
+        }
+    }
+
     function migrateLegacyUser() {
         try {
             const legacyRaw = localStorage.getItem(LEGACY_USER_KEY);
@@ -146,6 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 email: legacy.email.toLowerCase(),
                 mobile: legacy.mobile,
                 password: '',
+                calendarProvider: 'other',
                 registeredAt: legacy.registeredAt || new Date().toISOString()
             });
             setLoggedIn(true);
@@ -187,6 +209,26 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('accountEmail').textContent = account.email;
         document.getElementById('accountMobile').textContent = maskMobile(account.mobile);
         document.getElementById('accountRegistered').textContent = formatDate(account.registeredAt);
+
+        var provider = account.calendarProvider || 'other';
+        var calendarLabel = OpenTrackrCalendar.getProviderLabel(provider);
+        var accountCalendar = document.getElementById('accountCalendar');
+        if (accountCalendar) accountCalendar.textContent = calendarLabel;
+
+        var providerLabel = document.getElementById('calendarProviderLabel');
+        if (providerLabel) providerLabel.textContent = calendarLabel;
+
+        var importHelp = document.getElementById('calendarImportHelp');
+        if (importHelp) importHelp.textContent = OpenTrackrCalendar.getImportHelp(provider);
+
+        var calendarSelect = document.getElementById('calendarProvider');
+        if (calendarSelect) calendarSelect.value = provider;
+
+        var exportMessage = document.getElementById('calendarExportMessage');
+        if (exportMessage) {
+            exportMessage.textContent = '';
+            exportMessage.className = '';
+        }
 
         accountPanel.classList.remove('hidden');
         authSection.classList.add('hidden');

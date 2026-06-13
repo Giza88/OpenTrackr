@@ -52,7 +52,22 @@
                             <dt>Registered</dt>
                             <dd id="accountRegistered"></dd>
                         </div>
+                        <div class="account-row">
+                            <dt>Calendar</dt>
+                            <dd id="accountCalendar"></dd>
+                        </div>
                     </dl>
+                    <div class="calendar-connect">
+                        <h4>Connect your calendar</h4>
+                        <p class="calendar-help">
+                            OpenTrackr cannot sync live to cloud calendars from this browser-only site.
+                            Export your tasks as a standard <strong>.ics</strong> file and import it into
+                            <span id="calendarProviderLabel">your calendar app</span>.
+                        </p>
+                        <p id="calendarImportHelp" class="calendar-import-help"></p>
+                        <button type="button" id="exportCalendarBtn" class="btn-primary">Export tasks to calendar (.ics)</button>
+                        <p id="calendarExportMessage" class="calendar-export-msg" role="status" aria-live="polite"></p>
+                    </div>
                     <p class="account-note">Your account stays on this device. Log out anytime and sign back in with your email and password.</p>
                     <button type="button" id="logoutBtn" class="btn-secondary">Log out</button>
                 </div>
@@ -114,6 +129,16 @@
                         <input type="password" id="confirmPassword" name="confirmPassword" required
                             minlength="6" maxlength="12">
                     </div>
+                    <div class="form-group">
+                        <label for="calendarProvider">Preferred calendar</label>
+                        <select id="calendarProvider" name="calendarProvider">
+                            <option value="google">Google Calendar</option>
+                            <option value="outlook">Microsoft Outlook</option>
+                            <option value="apple">Apple Calendar</option>
+                            <option value="other">Other / not sure</option>
+                        </select>
+                        <p class="field-hint">After sign-up you can export tasks as a file your calendar app can import.</p>
+                    </div>
                     <div class="form-actions">
                         <button type="submit" class="btn-primary">Submit</button>
                     </div>
@@ -129,6 +154,7 @@
         </footer>
     </div>
 
+    <script src="calendar-export.js"></script>
     <script src="theme.js"></script>
     <script src="script.js"></script>
 </body>
