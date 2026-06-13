@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Assessment submission binaries (keep locally; source is in website-development/)
+*.zip
+BIT503_*.docx

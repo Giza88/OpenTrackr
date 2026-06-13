@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Tracker | OpenTrackr</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css">
+</head>
+<body class="tracker-page">
+    <div class="page-wrapper">
+        <header class="site-header">
+            <div class="site-header-inner">
+                <h1 class="site-title"><a href="index.html">📋 OpenTrackr</a></h1>
+                <nav class="site-nav" aria-label="Main navigation">
+                    <a href="index.html">Home</a>
+                    <a href="tracker.html" class="active">Task Tracker</a>
+                    <a href="register.html">Register</a>
+                </nav>
+            </div>
+        </header>
+
+        <div class="app-container">
+            <div class="tracker-toolbar">
+                <h2 class="tracker-heading">Your Tasks</h2>
+                <div class="header-controls">
+                    <button id="viewToggle" class="btn-icon" title="Toggle View" type="button">
+                        <span id="viewIcon">📅</span>
+                    </button>
+                    <button id="themeToggle" class="btn-icon" title="Toggle Theme" type="button">
+                        <span id="themeIcon">🌙</span>
+                    </button>
+                    <button id="settingsBtn" class="btn-icon" title="Settings" type="button">
+                        ⚙️
+                    </button>
+                </div>
+            </div>
+
+            <!-- Settings Modal -->
+            <div id="settingsModal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="settingsTitle">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 id="settingsTitle">Settings</h2>
+                        <button class="close-btn" id="closeSettings" aria-label="Close settings" type="button">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="setting-group">
+                            <h3>Notification Settings</h3>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="enableNotifications">
+                                <span>Enable Browser Notifications</span>
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <h3>Default Categories</h3>
+                            <div id="categoryManagement">
+                                <div id="categoryList"></div>
+                                <button id="addCategoryBtn" class="btn-secondary" type="button">Add Category</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Task Modal -->
+            <div id="taskModal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modalTitle">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 id="modalTitle">Add New Task</h2>
+                        <button class="close-btn" id="closeTaskModal" aria-label="Close task modal" type="button">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="taskForm">
+                            <div class="form-group">
+                                <label for="taskTitle">Title <span class="required">*</span></label>
+                                <input type="text" id="taskTitle" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskDescription">Description</label>
+                                <textarea id="taskDescription" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskCategory">Category</label>
+                                <select id="taskCategory"></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskDueDate">Due Date</label>
+                                <input type="datetime-local" id="taskDueDate">
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="taskNotification">
+                                    <span>Set Reminder Notification</span>
+                                </label>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-primary">Save Task</button>
+                                <button type="button" class="btn-secondary" id="cancelTask">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <main class="main-content">
+                <div class="add-task-section">
+                    <button id="addTaskBtn" class="btn-primary btn-large" type="button">➕ Add New Task</button>
+                </div>
+                <div id="kanbanView" class="kanban-board hidden">
+                    <div id="kanbanColumns" class="kanban-columns"></div>
+                </div>
+                <div id="listView" class="task-list-view hidden">
+                    <div id="taskListContainer" class="task-list-container"></div>
+                </div>
+                <div id="calendarView" class="calendar-view">
+                    <div id="fullCalendar"></div>
+                </div>
+
+                <section id="planningWorkspace" class="planning-workspace" aria-label="Planning templates">
+                    <div class="planner-grid">
+                        <article class="planner-panel">
+                            <h3>Quick To-Do List</h3>
+                            <p class="planner-hint">Jot down small tasks for today — saved automatically.</p>
+                            <form id="quickTodoForm" class="quick-todo-form">
+                                <input type="text" id="quickTodoInput" placeholder="Add a to-do item..." maxlength="120" aria-label="New to-do item">
+                                <button type="submit" class="btn-primary">Add</button>
+                            </form>
+                            <ul id="quickTodoList" class="quick-todo-list"></ul>
+                        </article>
+
+                        <article class="planner-panel">
+                            <h3>Daily Planner Template</h3>
+                            <p class="planner-hint">Fill in your day to stay focused and on track.</p>
+                            <form id="dailyPlannerForm" class="daily-planner-form">
+                                <div class="form-group">
+                                    <label for="plannerDate">Date</label>
+                                    <input type="date" id="plannerDate">
+                                </div>
+                                <div class="form-group">
+                                    <label for="dailyFocus">Today&apos;s focus</label>
+                                    <input type="text" id="dailyFocus" placeholder="One sentence — what matters most today?">
+                                </div>
+                                <fieldset class="planner-fieldset">
+                                    <legend>Top 3 priorities</legend>
+                                    <input type="text" id="priority1" placeholder="Priority 1">
+                                    <input type="text" id="priority2" placeholder="Priority 2">
+                                    <input type="text" id="priority3" placeholder="Priority 3">
+                                </fieldset>
+                                <div class="form-group">
+                                    <label for="morningPlan">Morning plan</label>
+                                    <textarea id="morningPlan" rows="2" placeholder="Tasks and goals for the morning"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="afternoonPlan">Afternoon plan</label>
+                                    <textarea id="afternoonPlan" rows="2" placeholder="Tasks and goals for the afternoon"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="eveningPlan">Evening plan</label>
+                                    <textarea id="eveningPlan" rows="2" placeholder="Wrap-up and tomorrow prep"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dailyNotes">Notes &amp; reflections</label>
+                                    <textarea id="dailyNotes" rows="2" placeholder="What went well? What to improve?"></textarea>
+                                </div>
+                            </form>
+                        </article>
+
+                        <article class="planner-panel planner-panel-wide">
+                            <div class="planner-panel-header">
+                                <div>
+                                    <h3>Task Planner Template</h3>
+                                    <p class="planner-hint">Track bigger tasks with deadlines, priority, and status.</p>
+                                </div>
+                                <button type="button" id="addPlannerRow" class="btn-secondary">+ Add row</button>
+                            </div>
+                            <div class="task-planner-table-wrap">
+                                <table class="content-table task-planner-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Task</th>
+                                            <th>Due date</th>
+                                            <th>Priority</th>
+                                            <th>Status</th>
+                                            <th>Notes</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="taskPlannerBody"></tbody>
+                                </table>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <footer class="site-footer">
+            <p>Stefan Gislason | Assessment 3 Due: 23 July 2026</p>
+        </footer>
+    </div>
+
+    <div id="snackbar" class="snackbar hidden" role="status" aria-live="polite">
+        <span class="snackbar-message">Action performed</span>
+        <button id="snackbarUndo" class="btn-secondary" type="button">Undo</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+    <script src="app.js"></script>
+    <script src="planner.js"></script>
+</body>
+</html>
