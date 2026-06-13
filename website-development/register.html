@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register | OpenTrackr</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✏️</text></svg>">
+    <title>OpenTrackr</title>
+    <link rel="icon" type="image/png" href="images/whitelogo.png">
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
+<body class="register-page">
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <div class="page-wrapper">
         <header class="site-header">
             <div class="site-header-inner">
                 <h1 class="site-title"><a href="index.html">📋 OpenTrackr ✏️</a></h1>
                 <nav class="site-nav" aria-label="Main navigation">
-                    <a href="index.html">Home</a>
-                    <a href="tracker.html">Task Tracker</a>
-                    <a href="register.html" class="active">Register</a>
+                    <a href="index.html" class="nav-link nav-link--home">Home</a>
+                    <a href="tracker.html" class="nav-link nav-link--tracker">Task Tracker</a>
+                    <a href="register.html" class="nav-link nav-link--register active">Register</a>
+                    <a href="settings.html" class="nav-link nav-link--settings">Settings</a>
                     <button id="themeToggle" class="btn-icon site-theme-toggle" type="button" title="Toggle theme">
                         <span id="themeIcon">🌙</span>
                     </button>
@@ -26,7 +27,10 @@
 
         <main id="main-content" class="site-content">
             <section class="content-section">
-                <h2>Create Your OpenTrackr Account</h2>
+                <div class="section-heading-with-logo">
+                    <img src="images/fulllogo.png" alt="OpenTrackr logo" class="full-logo">
+                    <h2>Create Your OpenTrackr Account</h2>
+                </div>
                 <p class="intro-text">
                     Register to save your planning preferences and stay organised across your day and week.
                     Your account is stored locally in this browser — no server required.
@@ -156,6 +160,7 @@
 
     <script src="calendar-export.js"></script>
     <script src="theme.js"></script>
+    <script src="nav.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

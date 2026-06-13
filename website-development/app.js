@@ -50,7 +50,11 @@ class TaskTracker {
 
         if (savedTasks) this.tasks = JSON.parse(savedTasks);
         if (savedCategories) this.categories = JSON.parse(savedCategories);
-        if (savedViewMode) this.viewMode = savedViewMode;
+        if (savedViewMode && ['kanban', 'list', 'calendar'].includes(savedViewMode)) {
+            this.viewMode = savedViewMode;
+        } else {
+            this.viewMode = 'calendar';
+        }
 
         if (window.location.hash === '#calendar') {
             this.viewMode = 'calendar';
@@ -73,16 +77,39 @@ class TaskTracker {
     }
 
     // Task Management
+    mapStatusToCategory(status) {
+        if (status === 'In progress') return 'In Progress';
+        if (status === 'Done') return 'Done';
+        return 'To Do';
+    }
+
+    mapCategoryToStatus(category) {
+        if (category === 'In Progress') return 'In progress';
+        if (category === 'Done') return 'Done';
+        return 'Not started';
+    }
+
+    buildPlannerDescription(row) {
+        const parts = [];
+        if (row.priority) parts.push('Priority: ' + row.priority);
+        if (row.notes) parts.push(row.notes);
+        return parts.join('\n');
+    }
+
     addTask(taskData) {
+        const category = taskData.category || this.categories[0];
         const task = {
-            id: Date.now().toString(),
+            id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
             title: taskData.title,
             description: taskData.description || '',
-            category: taskData.category || this.categories[0],
+            category: category,
             dueDate: taskData.dueDate || null,
-            completed: false,
+            completed: category === 'Done' || Boolean(taskData.completed),
             notification: taskData.notification || false,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            plannerRowId: taskData.plannerRowId || null,
+            quickTodoId: taskData.quickTodoId || null,
+            priority: taskData.priority || ''
         };
 
         this.tasks.push(task);
@@ -92,6 +119,66 @@ class TaskTracker {
             this.scheduleNotification(task);
         }
 
+        return task;
+    }
+
+    upsertFromPlannerRow(row) {
+        if (!row || !String(row.task || '').trim()) return null;
+
+        const payload = {
+            title: row.task.trim(),
+            description: this.buildPlannerDescription(row),
+            category: this.mapStatusToCategory(row.status),
+            dueDate: row.due ? row.due + 'T09:00' : null,
+            notification: false,
+            plannerRowId: row.id,
+            priority: row.priority || '',
+            completed: row.status === 'Done'
+        };
+
+        const existing = row.boardTaskId
+            ? this.tasks.find(function (t) { return t.id === row.boardTaskId; })
+            : this.tasks.find(function (t) { return t.plannerRowId === row.id; });
+
+        if (existing) {
+            this.updateTask(existing.id, payload);
+            return existing;
+        }
+
+        const task = this.addTask(payload);
+        if (window.openTrackrPlannerSync && typeof window.openTrackrPlannerSync.onPlannerLinked === 'function') {
+            window.openTrackrPlannerSync.onPlannerLinked(row.id, task.id);
+        }
+        return task;
+    }
+
+    upsertFromQuickTodo(todo) {
+        if (!todo || !String(todo.text || '').trim()) return null;
+
+        const category = todo.done ? 'Done' : 'To Do';
+        const payload = {
+            title: todo.text.trim(),
+            description: '',
+            category: category,
+            dueDate: null,
+            notification: false,
+            quickTodoId: todo.id,
+            completed: todo.done
+        };
+
+        const existing = todo.boardTaskId
+            ? this.tasks.find(function (t) { return t.id === todo.boardTaskId; })
+            : this.tasks.find(function (t) { return t.quickTodoId === todo.id; });
+
+        if (existing) {
+            this.updateTask(existing.id, payload);
+            return existing;
+        }
+
+        const task = this.addTask(payload);
+        if (window.openTrackrPlannerSync && typeof window.openTrackrPlannerSync.onTodoLinked === 'function') {
+            window.openTrackrPlannerSync.onTodoLinked(todo.id, task.id);
+        }
         return task;
     }
     updateTask(taskId, updates) {
@@ -112,15 +199,24 @@ class TaskTracker {
 
         return this.tasks[taskIndex];
     }
-    deleteTask(taskId) {
+    deleteTask(taskId, options) {
+        const opts = options || {};
         const taskIndex = this.tasks.findIndex(t => t.id === taskId);
         if (taskIndex === -1) return;
 
         const [task] = this.tasks.splice(taskIndex, 1);
         this.cancelNotification(taskId);
-        this.lastDeleted = task;
+
+        if (window.openTrackrPlannerSync && typeof window.openTrackrPlannerSync.onBoardDelete === 'function') {
+            window.openTrackrPlannerSync.onBoardDelete(task);
+        }
+
         this.saveToStorage();
         this.render();
+
+        if (opts.silent) return;
+
+        this.lastDeleted = task;
         this.showUndoSnackbar(`Deleted: ${task.title}`, () => this.restoreDeletedTask());
     }
     restoreDeletedTask() {
@@ -153,13 +249,35 @@ class TaskTracker {
         }, 6000);
     }
     moveTask(taskId, newCategory) {
-        this.updateTask(taskId, { category: newCategory });
+        this.updateTask(taskId, {
+            category: newCategory,
+            completed: newCategory === 'Done'
+        });
+
+        const task = this.tasks.find(function (t) { return t.id === taskId; });
+        if (task && window.openTrackrPlannerSync && typeof window.openTrackrPlannerSync.onBoardMove === 'function') {
+            window.openTrackrPlannerSync.onBoardMove(task);
+        }
     }
     toggleComplete(taskId) {
         const task = this.tasks.find(t => t.id === taskId);
         if (!task) return;
 
-        this.updateTask(taskId, { completed: !task.completed });
+        const completed = !task.completed;
+        const updates = { completed: completed };
+        if (completed) {
+            updates.category = 'Done';
+        } else if (task.category === 'Done') {
+            updates.category = 'To Do';
+        }
+
+        this.updateTask(taskId, updates);
+
+        if (window.openTrackrPlannerSync && typeof window.openTrackrPlannerSync.onBoardMove === 'function') {
+            window.openTrackrPlannerSync.onBoardMove(this.tasks.find(t => t.id === taskId));
+        }
+
+        this.render();
     }
 
     // Category Management
@@ -220,20 +338,17 @@ class TaskTracker {
     }
 
     // View Management
-    toggleView() {
-        const modes = ['kanban', 'list', 'calendar'];
-        const currentIndex = modes.indexOf(this.viewMode);
-        this.viewMode = modes[(currentIndex + 1) % modes.length];
+    setViewMode(mode) {
+        if (!['kanban', 'list', 'calendar'].includes(mode)) return;
+        this.viewMode = mode;
         this.saveToStorage();
         this.render();
-        this.updateViewIcon();
+        this.updateViewButtons();
     }
-    updateViewIcon() {
-        const icon = document.getElementById('viewIcon');
-        if (!icon) return;
-        if (this.viewMode === 'kanban') icon.textContent = '📊';
-        else if (this.viewMode === 'list') icon.textContent = '📋';
-        else icon.textContent = '📅';
+    updateViewButtons() {
+        document.querySelectorAll('.view-switch-btn').forEach(function (btn) {
+            btn.classList.toggle('active', btn.dataset.view === this.viewMode);
+        }.bind(this));
     }
     toggleTheme() {
         this.theme = this.theme === 'light' ? 'dark' : 'light';
@@ -360,23 +475,16 @@ class TaskTracker {
             this.closeTaskModal();
         });
 
-        document.getElementById('closeSettings').addEventListener('click', () => {
-            this.closeSettingsModal();
-        });
-
         document.getElementById('cancelTask').addEventListener('click', () => {
             this.closeTaskModal();
         });
 
-        // View Toggle
-        document.getElementById('viewToggle').addEventListener('click', () => {
-            this.toggleView();
-        });
-
-        // Theme Toggle
-        document.getElementById('themeToggle').addEventListener('click', () => {
-            this.toggleTheme();
-        });
+        // View switcher
+        document.querySelectorAll('.view-switch-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                this.setViewMode(btn.dataset.view);
+            }.bind(this));
+        }.bind(this));
 
         const exportCalendarBtn = document.getElementById('exportCalendarBtn');
         if (exportCalendarBtn && window.OpenTrackrCalendar) {
@@ -397,44 +505,15 @@ class TaskTracker {
             });
         }
 
-        // Settings
-        document.getElementById('settingsBtn').addEventListener('click', () => {
-            this.openSettingsModal();
-        });
-
         // Task Form
         document.getElementById('taskForm').addEventListener('submit', (e) => {
             e.preventDefault();
             this.handleTaskSubmit();
         });
 
-        // Settings
-        document.getElementById('enableNotifications').addEventListener('change', (e) => {
-            this.notificationsEnabled = e.target.checked;
-            if (this.notificationsEnabled && Notification.permission === 'default') {
-                Notification.requestPermission().then(permission => {
-                    if (permission !== 'granted') {
-                        this.notificationsEnabled = false;
-                        e.target.checked = false;
-                    }
-                });
-            }
-            this.saveToStorage();
-        });
-
-        document.getElementById('addCategoryBtn').addEventListener('click', () => {
-            const name = prompt('Enter category name:');
-            if (name) this.addCategory(name.trim());
-            this.renderSettings();
-        });
-
         // Close modals on outside click
         document.getElementById('taskModal').addEventListener('click', (e) => {
             if (e.target.id === 'taskModal') this.closeTaskModal();
-        });
-
-        document.getElementById('settingsModal').addEventListener('click', (e) => {
-            if (e.target.id === 'settingsModal') this.closeSettingsModal();
         });
 
         // Snackbar undo click (in case user presses undo when it's visible)
@@ -447,10 +526,7 @@ class TaskTracker {
             });
         }
 
-        // Set initial theme
-        document.documentElement.setAttribute('data-theme', this.theme);
-        this.updateThemeIcon();
-        this.updateViewIcon();
+        this.updateViewButtons();
     }
 
     // Modal Management
@@ -492,23 +568,6 @@ class TaskTracker {
             this.previousActiveElement.focus();
         }
     }
-    openSettingsModal() {
-        document.getElementById('enableNotifications').checked = this.notificationsEnabled;
-        this.renderSettings();
-        const modal = document.getElementById('settingsModal');
-        this.previousActiveElement = document.activeElement;
-        modal.setAttribute('aria-hidden', 'false');
-        modal.classList.remove('hidden');
-        this.trapFocus(modal);
-    }
-    closeSettingsModal() {
-        const modal = document.getElementById('settingsModal');
-        modal.classList.add('hidden');
-        modal.setAttribute('aria-hidden', 'true');
-        if (this.previousActiveElement && typeof this.previousActiveElement.focus === 'function') {
-            this.previousActiveElement.focus();
-        }
-    }
     handleTaskSubmit() {
         const formData = {
             title: document.getElementById('taskTitle').value.trim(),
@@ -537,23 +596,6 @@ class TaskTracker {
         select.innerHTML = this.categories.map(cat => 
             `<option value="${cat}">${cat}</option>`
         ).join('');
-    }
-    renderSettings() {
-        const categoryList = document.getElementById('categoryList');
-        categoryList.innerHTML = this.categories.map((cat, index) => `
-            <div class="category-item">
-                <input type="text" value="${cat}" data-index="${index}" 
-                    onchange="app.updateCategoryFromInput('${cat}', this.value)">
-                <div>
-                    <button class="btn-small" onclick="app.deleteCategory('${cat}')">🗑️</button>
-                </div>
-            </div>
-        `).join('');
-    }
-    updateCategoryFromInput(oldName, newName) {
-        if (newName && newName !== oldName) {
-            this.updateCategory(oldName, newName);
-        }
     }
 
     // Rendering
@@ -595,14 +637,40 @@ class TaskTracker {
                     <div class="tasks-container" data-category="${category}">
                         ${categoryTasks.length > 0 
                             ? categoryTasks.map(task => this.renderTaskCard(task)).join('')
-                            : '<div class="empty-state">No tasks</div>'
+                            : '<div class="empty-state">Drop cards here or add one below</div>'
                         }
                     </div>
+                    <form class="kanban-add-form" data-category="${this.escapeHtml(category)}">
+                        <input type="text" class="kanban-add-input" placeholder="+ Add a card" maxlength="120" aria-label="Add task to ${this.escapeHtml(category)}">
+                        <button type="submit" class="kanban-add-submit">Add</button>
+                    </form>
                 </div>
             `;
         }).join('');
 
         this.setupDragAndDrop();
+        this.setupKanbanQuickAdd();
+    }
+
+    setupKanbanQuickAdd() {
+        document.querySelectorAll('.kanban-add-form').forEach(function (form) {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const input = form.querySelector('.kanban-add-input');
+                const title = input.value.trim();
+                if (!title) return;
+
+                this.addTask({
+                    title: title,
+                    category: form.dataset.category,
+                    description: '',
+                    dueDate: null,
+                    notification: false
+                });
+                input.value = '';
+                this.render();
+            }.bind(this));
+        }.bind(this));
     }
     renderCalendar() {
         document.getElementById('kanbanView').classList.add('hidden');
@@ -644,6 +712,9 @@ class TaskTracker {
         } else {
             this.calendarInstance.removeAllEvents();
             events.forEach(event => this.calendarInstance.addEvent(event));
+            requestAnimationFrame(() => {
+                if (this.calendarInstance) this.calendarInstance.updateSize();
+            });
         }
     }
     renderList() {
@@ -689,6 +760,9 @@ class TaskTracker {
                 </div>
                 ${task.description ? `<div class="task-description">${this.escapeHtml(task.description)}</div>` : ''}
                 <div class="task-meta">
+                    ${task.priority ? `<span class="task-priority-tag task-priority-${task.priority.toLowerCase()}">${this.escapeHtml(task.priority)}</span>` : ''}
+                    ${task.plannerRowId ? '<span class="task-source-tag">📋 Planner</span>' : ''}
+                    ${task.quickTodoId ? '<span class="task-source-tag">✅ Quick to-do</span>' : ''}
                     ${task.dueDate ? `
                         <div class="task-due-date ${overdue ? 'overdue' : ''}">
                             📅 ${this.formatDate(task.dueDate)}

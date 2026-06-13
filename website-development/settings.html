@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenTrackr</title>
+    <link rel="icon" type="image/png" href="images/whitelogo.png">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="settings-page">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <div class="page-wrapper">
+        <header class="site-header">
+            <div class="site-header-inner">
+                <h1 class="site-title"><a href="index.html">📋 OpenTrackr ✏️</a></h1>
+                <nav class="site-nav" aria-label="Main navigation">
+                    <a href="index.html" class="nav-link nav-link--home">Home</a>
+                    <a href="tracker.html" class="nav-link nav-link--tracker">Task Tracker</a>
+                    <a href="register.html" class="nav-link nav-link--register">Register</a>
+                    <a href="settings.html" class="nav-link nav-link--settings active">Settings</a>
+                    <button id="themeToggle" class="btn-icon site-theme-toggle" type="button" title="Toggle theme">
+                        <span id="themeIcon">🌙</span>
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <main id="main-content" class="site-content">
+            <section class="content-section">
+                <div class="section-heading-with-logo">
+                    <img src="images/fulllogo.png" alt="OpenTrackr logo" class="full-logo">
+                    <h2>Settings</h2>
+                </div>
+                <p class="intro-text settings-intro">Customise OpenTrackr on this device. Changes are saved automatically in your browser.</p>
+                <p id="settingsMessage" class="settings-message" role="status" aria-live="polite"></p>
+
+                <div class="settings-grid">
+                    <article class="settings-card">
+                        <h3>Appearance</h3>
+                        <div class="form-group">
+                            <label for="fontChoice">Font</label>
+                            <select id="fontChoice">
+                                <option value="system">System default</option>
+                                <option value="arial">Arial</option>
+                                <option value="verdana">Verdana</option>
+                                <option value="georgia">Georgia</option>
+                                <option value="permanent">Permanent Marker</option>
+                                <option value="comic">Comic Sans MS</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="themeChoice">Colour theme</label>
+                            <select id="themeChoice">
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                            </select>
+                        </div>
+                    </article>
+
+                    <article class="settings-card">
+                        <h3>Password</h3>
+                        <p class="settings-hint" id="passwordHint">Log in on the Register page first to change your password here.</p>
+                        <form id="passwordForm" class="settings-form hidden">
+                            <div class="form-group">
+                                <label for="currentPassword">Current password</label>
+                                <input type="password" id="currentPassword" required minlength="6" maxlength="12" autocomplete="current-password">
+                            </div>
+                            <div class="form-group">
+                                <label for="newPassword">New password</label>
+                                <input type="password" id="newPassword" required minlength="6" maxlength="12" autocomplete="new-password">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmNewPassword">Confirm new password</label>
+                                <input type="password" id="confirmNewPassword" required minlength="6" maxlength="12" autocomplete="new-password">
+                            </div>
+                            <button type="submit" class="btn-primary">Update password</button>
+                        </form>
+                        <a href="register.html" id="passwordLoginLink" class="btn-secondary settings-link-btn">Go to Register / Log in</a>
+                    </article>
+
+                    <article class="settings-card">
+                        <h3>Calendar</h3>
+                        <p class="settings-hint">Choose your calendar app and export tasks as a file you can import.</p>
+                        <div class="form-group">
+                            <label for="settingsCalendarProvider">Preferred calendar</label>
+                            <select id="settingsCalendarProvider">
+                                <option value="google">Google Calendar</option>
+                                <option value="outlook">Microsoft Outlook</option>
+                                <option value="apple">Apple Calendar</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <p id="settingsCalendarHelp" class="settings-help-box"></p>
+                        <button type="button" id="settingsExportCalendar" class="btn-primary">Export tasks to calendar (.ics)</button>
+                    </article>
+
+                    <article class="settings-card settings-card-wide">
+                        <h3>Planner templates</h3>
+                        <p class="settings-hint">Load a preset or import your own JSON template for the Quick To-Do, Daily Planner, and Task Planner on the tracker page.</p>
+                        <div class="settings-template-actions">
+                            <label for="templatePreset" class="sr-only">Choose a preset template</label>
+                            <select id="templatePreset">
+                                <option value="study">Study week</option>
+                                <option value="work">Work week</option>
+                                <option value="fitness">Fitness &amp; wellness week</option>
+                                <option value="blank">Blank template</option>
+                            </select>
+                            <button type="button" id="loadTemplatePreset" class="btn-primary">Load preset</button>
+                            <button type="button" id="exportTemplates" class="btn-secondary">Export my templates</button>
+                        </div>
+                        <div class="form-group settings-import-row">
+                            <label for="templateImportFile">Import template file (.json)</label>
+                            <input type="file" id="templateImportFile" accept=".json,application/json">
+                        </div>
+                    </article>
+
+                    <article class="settings-card">
+                        <h3>Notifications</h3>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="settingsNotifications">
+                            <span>Enable browser notifications for task reminders</span>
+                        </label>
+                    </article>
+
+                    <article class="settings-card settings-card-wide">
+                        <h3>Task categories</h3>
+                        <p class="settings-hint">Categories used on the Task Tracker Kanban board and task form.</p>
+                        <div id="settingsCategoryList" class="settings-category-list"></div>
+                        <button type="button" id="settingsAddCategory" class="btn-secondary">Add category</button>
+                    </article>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <p>Stefan Gislason | Assessment 3 Due: 23 July 2026</p>
+        </footer>
+    </div>
+
+    <script src="calendar-export.js"></script>
+    <script src="theme.js"></script>
+    <script src="nav.js"></script>
+    <script src="settings.js"></script>
+</body>
+</html>

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Tracker | OpenTrackr</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✏️</text></svg>">
+    <title>OpenTrackr</title>
+    <link rel="icon" type="image/png" href="images/whitelogo.png">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css">
 </head>
@@ -15,9 +15,10 @@
             <div class="site-header-inner">
                 <h1 class="site-title"><a href="index.html">📋 OpenTrackr ✏️</a></h1>
                 <nav class="site-nav" aria-label="Main navigation">
-                    <a href="index.html">Home</a>
-                    <a href="tracker.html" class="active">Task Tracker</a>
-                    <a href="register.html">Register</a>
+                    <a href="index.html" class="nav-link nav-link--home">Home</a>
+                    <a href="tracker.html" class="nav-link nav-link--tracker active">Task Tracker</a>
+                    <a href="register.html" class="nav-link nav-link--register">Register</a>
+                    <a href="settings.html" class="nav-link nav-link--settings">Settings</a>
                 </nav>
             </div>
         </header>
@@ -26,43 +27,18 @@
             <div class="tracker-toolbar">
                 <h2 class="tracker-heading">Your Tasks</h2>
                 <div class="header-controls">
+                    <div class="view-switcher" role="group" aria-label="Choose task view">
+                        <button type="button" class="view-switch-btn active" data-view="calendar" id="viewCalendarBtn">📅 Calendar</button>
+                        <button type="button" class="view-switch-btn" data-view="kanban" id="viewKanbanBtn">📊 Kanban</button>
+                        <button type="button" class="view-switch-btn" data-view="list" id="viewListBtn">📋 List</button>
+                    </div>
                     <button id="exportCalendarBtn" class="btn-icon" title="Export tasks to calendar (.ics)" type="button">
                         📤
-                    </button>
-                    <button id="viewToggle" class="btn-icon" title="Toggle View" type="button">
-                        <span id="viewIcon">📅</span>
                     </button>
                     <button id="themeToggle" class="btn-icon" title="Toggle Theme" type="button">
                         <span id="themeIcon">🌙</span>
                     </button>
-                    <button id="settingsBtn" class="btn-icon" title="Settings" type="button">
-                        ⚙️
-                    </button>
-                </div>
-            </div>
-
-            <div id="settingsModal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="settingsTitle">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h2 id="settingsTitle">Settings</h2>
-                        <button class="close-btn" id="closeSettings" aria-label="Close settings" type="button">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="setting-group">
-                            <h3>Notification Settings</h3>
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="enableNotifications">
-                                <span>Enable Browser Notifications</span>
-                            </label>
-                        </div>
-                        <div class="setting-group">
-                            <h3>Default Categories</h3>
-                            <div id="categoryManagement">
-                                <div id="categoryList"></div>
-                                <button id="addCategoryBtn" class="btn-secondary" type="button">Add Category</button>
-                            </div>
-                        </div>
-                    </div>
+                    <a href="settings.html" class="btn-icon" title="Settings">⚙️</a>
                 </div>
             </div>
 
@@ -110,20 +86,36 @@
                     <button id="addTaskBtn" class="btn-primary btn-large" type="button">➕ Add New Task</button>
                 </div>
                 <div id="kanbanView" class="kanban-board hidden">
+                    <p class="kanban-hint">Drag cards between columns to update status — same as changing status in the Task Planner below.</p>
                     <div id="kanbanColumns" class="kanban-columns"></div>
                 </div>
                 <div id="listView" class="task-list-view hidden">
                     <div id="taskListContainer" class="task-list-container"></div>
                 </div>
                 <div id="calendarView" class="calendar-view">
+                    <div class="panel-heading-with-logo">
+                        <img src="images/blacklogo.png" alt="OpenTrackr logo" class="panel-logo">
+                        <h3>Calendar</h3>
+                    </div>
                     <div id="fullCalendar"></div>
                 </div>
+
+                <section id="savedDailyPlansSection" class="saved-daily-plans-section" aria-label="Saved daily planner notes">
+                    <h3 class="saved-plans-heading">Saved daily plans</h3>
+                    <p class="saved-plans-hint">Notes you save from the Daily Planner appear here. Drag them to move, click to edit.</p>
+                    <div id="dailyPlannerNotesBoard" class="daily-planner-notes-board">
+                        <p id="dailyPlannerNotesEmpty" class="daily-planner-notes-empty">No saved plans yet — fill in the Daily Planner below and click Save as note.</p>
+                    </div>
+                </section>
 
                 <section id="planningWorkspace" class="planning-workspace" aria-label="Planning templates">
                     <div class="planner-grid">
                         <article class="planner-panel">
-                            <h3>Quick To-Do List</h3>
-                            <p class="planner-hint">Jot down small tasks for today — saved automatically.</p>
+                            <div class="panel-heading-with-logo">
+                                <img src="images/blacklogo.png" alt="OpenTrackr logo" class="panel-logo">
+                                <h3>Quick To-Do List</h3>
+                            </div>
+                            <p class="planner-hint">Quick to-dos go straight to the <strong>Kanban board</strong> (To Do column). Check them off here or drag cards on the board.</p>
                             <form id="quickTodoForm" class="quick-todo-form">
                                 <input type="text" id="quickTodoInput" placeholder="Add a to-do item..." maxlength="120" aria-label="New to-do item">
                                 <button type="submit" class="btn-primary">Add</button>
@@ -132,8 +124,11 @@
                         </article>
 
                         <article class="planner-panel">
-                            <h3>Daily Planner Template</h3>
-                            <p class="planner-hint">Fill in your day to stay focused and on track.</p>
+                            <div class="panel-heading-with-logo">
+                                <img src="images/blacklogo.png" alt="OpenTrackr logo" class="panel-logo">
+                                <h3>Daily Planner Template</h3>
+                            </div>
+                            <p class="planner-hint">Fill in your day to stay focused and on track. Your entries are saved automatically as you type.</p>
                             <form id="dailyPlannerForm" class="daily-planner-form">
                                 <div class="form-group">
                                     <label for="plannerDate">Date</label>
@@ -166,31 +161,47 @@
                                     <textarea id="dailyNotes" rows="2" placeholder="What went well? What to improve?"></textarea>
                                 </div>
                             </form>
+                            <div class="daily-planner-actions">
+                                <p id="dailyPlannerStatus" class="planner-form-status" aria-live="polite"></p>
+                                <div class="daily-planner-action-buttons">
+                                    <button type="button" id="saveDailyPlanner" class="btn-primary">Save as note</button>
+                                    <button type="button" id="clearDailyPlanner" class="btn-secondary">Clear form</button>
+                                    <button type="button" id="deleteDailyPlanner" class="btn-secondary hidden">Delete saved note</button>
+                                </div>
+                            </div>
                         </article>
 
-                        <article class="planner-panel planner-panel-wide">
-                            <div class="planner-panel-header">
-                                <div>
-                                    <h3>Task Planner Template</h3>
-                                    <p class="planner-hint">Track bigger tasks with deadlines, priority, and status.</p>
+                        <article class="planner-panel planner-panel-wide task-planner-panel">
+                            <div class="panel-heading-with-logo">
+                                <img src="images/blacklogo.png" alt="OpenTrackr logo" class="panel-logo">
+                                <h3>Task Planner Template</h3>
+                            </div>
+                            <p class="planner-hint planner-hint--center">Plan tasks here, then click <strong>Add to board</strong> to send them to the Kanban view. Drag cards between columns like Trello.</p>
+                            <div class="task-planner-toolbar">
+                                <p id="taskPlannerMeta" class="task-planner-meta" aria-live="polite">Auto-saved · <span id="taskPlannerRowCount">0 tasks</span></p>
+                                <div class="task-planner-toolbar-actions">
+                                    <button type="button" id="sendAllToBoard" class="btn-secondary">Send all to board</button>
+                                    <button type="button" id="addPlannerRow" class="btn-primary task-planner-add-btn">+ New task</button>
                                 </div>
-                                <button type="button" id="addPlannerRow" class="btn-secondary">+ Add row</button>
                             </div>
                             <div class="task-planner-table-wrap">
-                                <table class="content-table task-planner-table">
+                                <table class="task-planner-table">
                                     <thead>
                                         <tr>
-                                            <th>Task</th>
-                                            <th>Due date</th>
-                                            <th>Priority</th>
-                                            <th>Status</th>
-                                            <th>Notes</th>
-                                            <th></th>
+                                            <th scope="col">Task name</th>
+                                            <th scope="col">Due date</th>
+                                            <th scope="col">Priority</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Notes</th>
+                                            <th scope="col">Kanban</th>
+                                            <th scope="col"><span class="visually-hidden">Actions</span></th>
                                         </tr>
                                     </thead>
                                     <tbody id="taskPlannerBody"></tbody>
                                 </table>
+                                <p id="taskPlannerEmpty" class="task-planner-empty hidden">No tasks yet — click <strong>+ New task</strong> to add your first row.</p>
                             </div>
+                            <button type="button" id="addPlannerRowFooter" class="task-planner-add-footer">+ Add new task</button>
                         </article>
                     </div>
                 </section>
@@ -209,6 +220,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
     <script src="calendar-export.js"></script>
+    <script src="theme.js"></script>
+    <script src="nav.js"></script>
     <script src="app.js"></script>
     <script src="planner.js"></script>
 </body>
