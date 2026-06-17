@@ -1,7 +1,7 @@
-// PawTrack Application
+// OpenTrackr Application
 class TaskTracker {
         /*
-            PawTrack - Single-file app logic
+            OpenTrackr - Single-file app logic
 
             Responsibilities:
                 - Manage tasks and categories in-memory and in localStorage
@@ -733,7 +733,7 @@ class TaskTracker {
             return;
         }
 
-        console.log('PawTrack: rendering kanban for categories=', this.categories);
+        console.log('OpenTrackr: rendering kanban for categories=', this.categories);
 
         columnsContainer.innerHTML = this.categories.map((category, index) => {
             const categoryTasks = this.tasks.filter(t => t.category === category);

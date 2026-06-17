@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — OpenTrackr</title>
+    <link rel="icon" type="image/png" href="images/whitelogo.png">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="about-page">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <div class="page-wrapper">
+        <header class="site-header">
+            <div class="site-header-inner">
+                <h1 class="site-title"><a href="index.html">📋 OpenTrackr ✏️</a></h1>
+                <nav class="site-nav" aria-label="Main navigation">
+                    <a href="index.html" class="nav-link nav-link--home">Home</a>
+                    <a href="tracker.html" class="nav-link nav-link--tracker">Task Tracker</a>
+                    <a href="register.html" class="nav-link nav-link--register">Register</a>
+                    <a href="settings.html" class="nav-link nav-link--settings">Settings</a>
+                    <a href="about.html" class="nav-link nav-link--about active">About</a>
+                    <button id="themeToggle" class="btn-icon site-theme-toggle" type="button" title="Toggle theme">
+                        <span id="themeIcon">🌙</span>
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <main id="main-content" class="site-content">
+            <section class="content-section">
+                <div class="section-heading-with-logo">
+                    <img src="images/fulllogo.png" alt="OpenTrackr logo" class="full-logo">
+                    <h2>About OpenTrackr</h2>
+                </div>
+                <p class="intro-text">
+                    OpenTrackr is a browser-based productivity site built for young adults aged 18–35 who want
+                    clearer daily and weekly planning. It combines practical planning tips, a task tracker with
+                    calendar views, and local account registration — all without needing a server.
+                </p>
+            </section>
+
+            <section class="content-section">
+                <h2>What You Can Do Here</h2>
+                <ul class="content-list about-feature-list">
+                    <li>Read planning tips and use a sample weekly template on the home page.</li>
+                    <li>Organise tasks on a Kanban board, list view, or calendar in the Task Tracker.</li>
+                    <li>Register an account stored locally in your browser for personalised settings.</li>
+                    <li>Switch between light and dark themes to suit your workspace.</li>
+                </ul>
+            </section>
+
+            <section class="content-section">
+                <h2>About This Project</h2>
+                <p class="intro-text">
+                    OpenTrackr was created by <strong>Stefan Gislason</strong> as part of
+                    <strong>BIT503 Fundamentals of Information Technology</strong> at the Open Polytechnic of New Zealand.
+                    It is Assessment 3, due 23 July 2026.
+                </p>
+                <p>
+                    The site is built with HTML, CSS, and JavaScript. Tasks and account details are saved in
+                    your browser using local storage, so your data stays on your device.
+                </p>
+                <a href="tracker.html" class="btn-primary">Try the Task Tracker</a>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <p>Stefan Gislason | Assessment 3 Due: 23 July 2026</p>
+        </footer>
+    </div>
+
+    <script src="theme.js"></script>
+    <script src="nav.js"></script>
+</body>
+</html>

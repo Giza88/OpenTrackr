@@ -1,8 +1,8 @@
 /*
-    styles.css - PawTrack
+    styles.css - OpenTrackr
 
     Purpose: Centralized styling and lightweight design system used by the
-    PawTrack application. Keep changes focused on variables and component
+    OpenTrackr application. Keep changes focused on variables and component
     layout. Many class names are referenced from `app.js`, so avoid renaming
     IDs/classes unless you update the JS accordingly.
 
@@ -72,10 +72,10 @@ body {
 }
 
 /* Page background image (user-provided).
-   Updated to use the second image `pawtrack_background2.jpg` saved in `public/images`.
+   Updated to use the second image `page-background.jpg` saved in `public/images`.
    Vite serves files from `public/` at the site root, so use an absolute path. */
 body {
-    background-image: url('./public/images/pawtrack_background2.jpg');
+    background-image: url('./public/images/page-background.jpg');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -228,7 +228,7 @@ body::before {
        Vite serves files in `public/` at the root, so the path is /images/... */
     position: relative;
     overflow: hidden;
-    background-image: url('./public/images/pawtrack.jpg');
+    background-image: url('./public/images/tracker-bg.jpg');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
