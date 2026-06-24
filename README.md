@@ -29,6 +29,8 @@ website-development/     ← main site (BIT503 Assessment 3 submission)
 
 ## Run locally
 
+**For markers / lecturers:** see the **[how-to/START-UP-GUIDE.md](how-to/START-UP-GUIDE.md)** folder for full start-up instructions, or on Windows right-click **`how-to/start-server.ps1`** → **Run with PowerShell**.
+
 Open the site with any static server from the `website-development` folder:
 
 ```powershell
