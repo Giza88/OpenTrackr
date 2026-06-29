@@ -1,5 +1,4 @@
-// Registration, login, and local account storage (this browser only).
-// Account data: localStorage keys openTrackr_account, openTrackr_loggedIn.
+// Registration, login, and local account storage (this browser only)
 document.addEventListener('DOMContentLoaded', function () {
     const ACCOUNT_KEY = 'openTrackr_account';
     const SESSION_KEY = 'openTrackr_loggedIn';

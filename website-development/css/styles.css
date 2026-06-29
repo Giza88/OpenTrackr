@@ -1,9 +1,4 @@
-/*
- * OpenTrackr shared stylesheet (website-development/css/styles.css)
- * Loaded by every page. Page-specific backgrounds use body classes:
- * home-page, about-page, tracker-page, register-page, settings-page.
- * Light/dark mode: [data-theme="dark"] on <html>, toggled by theme.js.
- */
+/* OpenTrackr styles */
 @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
 
 :root {
@@ -823,7 +818,7 @@ body.about-page .site-footer {
     font-style: italic;
 }
 
-/* Shared header, nav links, and page wrapper used on all HTML pages */
+/* Site layout */
 .page-wrapper {
     min-height: 100vh;
     display: flex;
@@ -989,7 +984,6 @@ body.about-page .site-footer {
     width: 100%;
 }
 
-/* Footer on every page: update text in each HTML file; layout centred here */
 .site-footer {
     background-color: var(--bg-primary);
     border-top: 1px solid var(--border-color);
@@ -1134,7 +1128,6 @@ body.about-page .site-footer {
     color: var(--text-muted);
 }
 
-/* Home page planning table (index.html): borders, header colour, zebra rows */
 .content-table {
     width: 100%;
     border-collapse: collapse;
@@ -1162,7 +1155,6 @@ body.about-page .site-footer {
     background-color: var(--bg-tertiary);
 }
 
-/* Home page ordered list (index.html): lower-roman = i, ii, iii. Use upper-roman for I, II, III */
 .content-list {
     margin: 1rem 0 1.5rem 1.5rem;
     color: var(--text-secondary);
@@ -1173,7 +1165,6 @@ body.about-page .site-footer {
     margin-bottom: 0.5rem;
 }
 
-/* Responsive YouTube iframe on home page (index.html) */
 .video-wrapper {
     position: relative;
     width: 100%;

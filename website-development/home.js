@@ -1,5 +1,3 @@
-// Home page only (index.html): gallery cards open a tips modal.
-// To add a topic: create a gallery-card with data-topic="your-id" and add a matching entry below.
 (function () {
     const topics = {
         'daily-desk': {

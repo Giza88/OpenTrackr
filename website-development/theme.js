@@ -1,5 +1,4 @@
-// Applies saved light/dark theme and font on all pages that include this script.
-// localStorage keys: taskTracker_theme, openTrackr_font (also read by settings.js).
+// Applies saved light/dark theme and font on all pages that include this script
 (function () {
     const THEME_KEY = 'taskTracker_theme';
     const FONT_KEY = 'openTrackr_font';

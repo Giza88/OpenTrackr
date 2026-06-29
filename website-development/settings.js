@@ -1,5 +1,3 @@
-// Settings page (settings.html): font, theme, password, categories, planner templates, notifications.
-// Reads/writes the same localStorage keys as theme.js, app.js, and planner.js.
 document.addEventListener('DOMContentLoaded', function () {
     const ACCOUNT_KEY = 'openTrackr_account';
     const SESSION_KEY = 'openTrackr_loggedIn';

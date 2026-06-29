@@ -1,5 +1,3 @@
-// Tracker page planners: quick to-do, daily planner, task planner spreadsheet.
-// Saves drafts to localStorage (openTrackr_* keys). Syncs with Kanban via window.openTrackrPlannerSync.
 (function () {
     const TODO_KEY = 'openTrackr_quickTodos';
     const TODO_INPUT_DRAFT_KEY = 'openTrackr_quickTodoInputDraft';

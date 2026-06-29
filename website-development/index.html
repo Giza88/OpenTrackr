@@ -1,7 +1,4 @@
 <!DOCTYPE html>
-<!-- OpenTrackr home page (website-development/index.html)
-     Landing content: hero, image gallery, planning table, tips list, YouTube embed.
-     JS: theme.js and nav.js (all pages); home.js (gallery modal on this page only). -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,7 +13,6 @@
         <header class="site-header">
             <div class="site-header-inner">
                 <h1 class="site-title"><a href="index.html">📋 OpenTrackr ✏️</a></h1>
-                <!-- Shared nav: copy to each HTML page. Mark current page with class="active" on its link. -->
                 <nav class="site-nav" aria-label="Main navigation">
                     <a href="index.html" class="nav-link nav-link--home active">Home</a>
                     <a href="tracker.html" class="nav-link nav-link--tracker">Task Tracker</a>
@@ -44,7 +40,6 @@
                 <a href="tracker.html#calendar" class="btn-primary btn-large">Open Task Tracker</a>
             </section>
 
-            <!-- Interactive gallery: card data-topic keys match entries in home.js -->
             <section class="content-section">
                 <h2>Why Planning Works</h2>
                 <p class="intro-text gallery-intro">Click a topic below to open practical tips you can use straight away.</p>
@@ -77,7 +72,6 @@
                 </div>
             </section>
 
-            <!-- Styled planning table: layout in HTML, colours/borders in css/styles.css (.content-table) -->
             <section class="content-section">
                 <h2>Sample Weekly Planning Template</h2>
                 <table class="content-table">
@@ -130,7 +124,6 @@
                 </table>
             </section>
 
-            <!-- Ordered list: Roman numerals come from .content-list in css/styles.css (list-style-type) -->
             <section class="content-section">
                 <h2>Five Daily Planning Tips</h2>
                 <ol class="content-list">
@@ -148,7 +141,6 @@
                 </p>
             </section>
 
-            <!-- YouTube embed: change the video by editing the iframe src (use /embed/VIDEO_ID format) -->
             <section class="content-section">
                 <h2>Productivity and Task Tracking</h2>
                 <p class="intro-text">
@@ -165,13 +157,11 @@
             </section>
         </main>
 
-        <!-- Site footer: same block on every page; centred via .site-footer in css/styles.css -->
         <footer class="site-footer">
             <p>Stefan Gislason | Assessment 3 Due: 23 July 2026</p>
         </footer>
     </div>
 
-    <!-- Tips popup: opened by gallery cards; content filled from home.js topics object -->
     <div id="tipsModal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="tipsModalTitle">
         <div class="modal-content tips-modal-content">
             <div class="modal-header">
