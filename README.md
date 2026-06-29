@@ -2,15 +2,15 @@
 
 A simple, smart productivity app that helps you stay organised with tasks, to-do lists, and a built-in calendar. Create tasks, set priorities, track deadlines, and personalise your workflow with themes and preferences. Designed to boost focus, manage study or work, and keep your day on track.
 
-Repository: [github.com/Giza88/OpenTrackr](https://github.com/Giza88/OpenTrackr)
+**Repository:** [github.com/Giza88/OpenTrackr](https://github.com/Giza88/OpenTrackr)
 
 ## Features
 
-- Home page — planning tips, weekly template, YouTube guide, interactive topic cards
-- Task tracker — Kanban board, list view, FullCalendar, quick to-do list
-- Planner templates — daily planner and task planner (auto-saved in browser)
-- Registration — HTML5 + JavaScript form validation
-- Themes — light and dark mode
+- **Home page** — planning tips, weekly template, YouTube guide, interactive topic cards
+- **Task tracker** — Kanban board, list view, FullCalendar, quick to-do list
+- **Planner templates** — daily planner and task planner (auto-saved in browser)
+- **Registration** — HTML5 + JavaScript form validation
+- **Themes** — light and dark mode
 
 ## Project structure
 
@@ -28,8 +28,6 @@ website-development/     ← main site (BIT503 Assessment 3 submission)
 ```
 
 ## Run locally
-
-For markers / lecturers: see the [how-to/START-UP-GUIDE.md](how-to/START-UP-GUIDE.md) folder for full start-up instructions, or on Windows right-click `how-to/start-server.ps1` → Run with PowerShell. For code structure see [how-to/CODE-GUIDE.md](how-to/CODE-GUIDE.md).
 
 Open the site with any static server from the `website-development` folder:
 

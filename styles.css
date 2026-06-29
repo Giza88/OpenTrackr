@@ -1,23 +1,4 @@
-/*
-    styles.css - OpenTrackr
-
-    Purpose: Centralized styling and lightweight design system used by the
-    OpenTrackr application. Keep changes focused on variables and component
-    layout. Many class names are referenced from `app.js`, so avoid renaming
-    IDs/classes unless you update the JS accordingly.
-
-    Sections:
-        - :root variables (light/dark themes)
-        - Global element styles
-        - Header / Controls
-        - Main content / Kanban board
-        - Task card & meta
-        - Modals & forms
-        - List view
-        - Snackbar / FAB / Responsive rules
-
-    Tip: Use the CSS variables at the top to tweak colors, spacing or typography.
-*/
+/* OpenTrackr styles */
 
 :root {
         /* Light Theme */
@@ -71,9 +52,6 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Page background image (user-provided).
-   Updated to use the second image `page-background.jpg` saved in `public/images`.
-   Vite serves files from `public/` at the site root, so use an absolute path. */
 body {
     background-image: url('./public/images/page-background.jpg');
     background-size: cover;
@@ -82,7 +60,6 @@ body {
     background-attachment: fixed;
 }
 
-/* Overlay to improve readability of text over busy backgrounds. */
 body::before {
     content: "";
     position: fixed;
@@ -92,7 +69,6 @@ body::before {
     z-index: 0;
 }
 
-/* Ensure app content sits above the overlay */
 .app-container {
     position: relative;
     z-index: 1;
@@ -131,7 +107,6 @@ body::before {
     border: 1px solid var(--border-color);
     padding: 0.5rem 1rem;
     cursor: pointer;
-         /* keep same variables for now (design uses the dark palette by default) */
     border-radius: 6px;
     font-size: 1.2rem;
     transition: all 0.2s ease;
@@ -224,8 +199,6 @@ body::before {
     min-height: 400px;
     display: flex;
     flex-direction: column;
-    /* Use the user-provided image as the background for each column.
-       Vite serves files in `public/` at the root, so the path is /images/... */
     position: relative;
     overflow: hidden;
     background-image: url('./public/images/tracker-bg.jpg');
@@ -233,7 +206,6 @@ body::before {
     background-position: center center;
     background-repeat: no-repeat;
 }
-/* Overlay on each column to improve contrast */
 .kanban-column::before {
     content: "";
     position: absolute;
@@ -242,7 +214,6 @@ body::before {
     pointer-events: none;
     z-index: 0;
 }
-/* Ensure visible content sits above the overlay */
 .kanban-column > * {
     position: relative;
     z-index: 1;

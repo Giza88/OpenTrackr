@@ -132,7 +132,6 @@
         localStorage.setItem(key, JSON.stringify(data));
     }
 
-    /* ----- Quick to-do list ----- */
     function initQuickTodos() {
         const form = document.getElementById('quickTodoForm');
         const input = document.getElementById('quickTodoInput');
@@ -292,7 +291,6 @@
         };
     }
 
-    /* ----- Daily planner template ----- */
     function initDailyPlanner() {
         const form = document.getElementById('dailyPlannerForm');
         const board = document.getElementById('dailyPlannerNotesBoard');
@@ -614,7 +612,6 @@
         }
     }
 
-    /* ----- Task planner template ----- */
     function initTaskPlanner() {
         const tbody = document.getElementById('taskPlannerBody');
         const addBtn = document.getElementById('addPlannerRow');

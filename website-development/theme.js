@@ -1,4 +1,3 @@
-// Applies saved light/dark theme and font on all pages that include this script
 (function () {
     const THEME_KEY = 'taskTracker_theme';
     const FONT_KEY = 'openTrackr_font';

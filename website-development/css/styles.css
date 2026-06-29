@@ -84,7 +84,6 @@ body {
     min-height: 100vh;
 }
 
-/* Open Polytechnic colour flow: blue → green → orange → brown (top to bottom) */
 body.home-page,
 body.tracker-page,
 body.register-page,
@@ -155,7 +154,6 @@ body.about-page .site-footer {
     background: rgba(15, 23, 42, 0.88);
 }
 
-/* Ensure app content sits above any page background layers */
 .app-container {
     position: relative;
     z-index: 1;
@@ -194,7 +192,6 @@ body.about-page .site-footer {
     border: 1px solid var(--border-color);
     padding: 0.5rem 1rem;
     cursor: pointer;
-         /* keep same variables for now (design uses the dark palette by default) */
     border-radius: 6px;
     font-size: 1.2rem;
     transition: all 0.2s ease;
@@ -293,7 +290,6 @@ body.about-page .site-footer {
     background-position: center center;
     background-repeat: no-repeat;
 }
-/* Overlay on each column to improve contrast */
 .kanban-column::before {
     content: "";
     position: absolute;
@@ -302,7 +298,6 @@ body.about-page .site-footer {
     pointer-events: none;
     z-index: 0;
 }
-/* Ensure visible content sits above the overlay */
 .kanban-column > * {
     position: relative;
     z-index: 1;

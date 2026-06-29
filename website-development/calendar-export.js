@@ -1,4 +1,3 @@
-// Export OpenTrackr tasks as .ics for Google, Outlook, Apple, and other calendar apps
 window.OpenTrackrCalendar = {
     TASKS_KEY: 'taskTracker_tasks',
 

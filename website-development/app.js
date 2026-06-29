@@ -1,4 +1,3 @@
-// OpenTrackr Application
 class TaskTracker {
     constructor() {
         this.tasks = [];
@@ -15,7 +14,6 @@ class TaskTracker {
         this.undoTimeoutId = null;
         this.previousActiveElement = null;
 
-        // debounced save to avoid excessive localStorage writes
         this.debouncedSave = this.debounce(() => {
             localStorage.setItem('taskTracker_tasks', JSON.stringify(this.tasks));
             localStorage.setItem('taskTracker_categories', JSON.stringify(this.categories));
@@ -35,9 +33,7 @@ class TaskTracker {
         this.setupNotificationCheck();
     }
 
-    // LocalStorage Management
     saveToStorage() {
-        // use debounced save to reduce write frequency
         if (this.debouncedSave) this.debouncedSave();
     }
     loadFromStorage() {
@@ -63,11 +59,9 @@ class TaskTracker {
         if (savedNotifications) this.notificationsEnabled = JSON.parse(savedNotifications);
         if (savedCategoryColors) this.categoryColors = JSON.parse(savedCategoryColors);
 
-        // Restore notification timers
         this.restoreNotifications();
     }
 
-    // Utility: debounce
     debounce(fn, ms = 300) {
         let t;
         return (...args) => {
@@ -76,7 +70,6 @@ class TaskTracker {
         };
     }
 
-    // Task Management
     mapStatusToCategory(status) {
         if (status === 'In progress') return 'In Progress';
         if (status === 'Done') return 'Done';
@@ -189,7 +182,6 @@ class TaskTracker {
         this.tasks[taskIndex] = { ...this.tasks[taskIndex], ...updates };
         this.saveToStorage();
 
-        // Handle notification changes
         if (updates.dueDate || updates.notification !== undefined || updates.completed) {
             this.cancelNotification(oldTask.id);
             if (this.tasks[taskIndex].notification && this.tasks[taskIndex].dueDate && !this.tasks[taskIndex].completed) {
@@ -233,7 +225,6 @@ class TaskTracker {
         const undoBtn = document.getElementById('snackbarUndo');
         msg.textContent = message;
         sb.classList.remove('hidden');
-        // remove any previous handler
         undoBtn.onclick = null;
         undoBtn.onclick = () => {
             undoCallback();
@@ -280,7 +271,6 @@ class TaskTracker {
         this.render();
     }
 
-    // Category Management
     addCategory(name) {
         if (!name || this.categories.includes(name)) return;
         this.categories.push(name);
@@ -300,7 +290,6 @@ class TaskTracker {
         if (index === -1 || this.categories.includes(newName)) return;
 
         this.categories[index] = newName;
-        // Update all tasks in this category
         this.tasks.forEach(task => {
             if (task.category === oldName) {
                 task.category = newName;
@@ -318,7 +307,6 @@ class TaskTracker {
         const index = this.categories.indexOf(name);
         if (index === -1) return;
 
-        // Move tasks to first available category
         const defaultCategory = this.categories.find(c => c !== name);
         this.tasks.forEach(task => {
             if (task.category === name) {
@@ -337,7 +325,6 @@ class TaskTracker {
         this.render();
     }
 
-    // View Management
     setViewMode(mode) {
         if (!['kanban', 'list', 'calendar'].includes(mode)) return;
         this.viewMode = mode;
@@ -361,10 +348,8 @@ class TaskTracker {
         icon.textContent = this.theme === 'light' ? '🌙' : '☀️';
     }
 
-    // Notification Management
     async requestNotificationPermission() {
         if ('Notification' in window && Notification.permission === 'default') {
-            // Don't request automatically, wait for user to enable in settings
         }
     }
     scheduleNotification(task) {
@@ -376,7 +361,6 @@ class TaskTracker {
 
         if (timeUntilDue <= 0) return;
 
-        // Schedule notification 5 minutes before due time (or at due time if less than 5 min away)
         const notificationTime = Math.min(timeUntilDue - 5 * 60 * 1000, timeUntilDue);
 
         const timerId = setTimeout(() => {
@@ -400,7 +384,6 @@ class TaskTracker {
         });
     }
     setupNotificationCheck() {
-        // Check for overdue tasks every minute
         setInterval(() => {
             this.render(); // Re-render to update overdue styling
         }, 60000);
@@ -417,13 +400,11 @@ class TaskTracker {
         this.cancelNotification(task.id);
     }
 
-    // Utility Functions
     isOverdue(task) {
         if (!task.dueDate || task.completed) return false;
         return new Date(task.dueDate) < new Date();
     }
 
-    // Focus trap for modals
     trapFocus(modal) {
         if (!modal) return;
         const focusable = modal.querySelectorAll('a[href], button:not([disabled]), textarea, input, select');
@@ -448,9 +429,7 @@ class TaskTracker {
             }
         }
 
-        // attach key handler to modal
         modal.addEventListener('keydown', keyHandler);
-        // ensure initial focus
         first.focus();
     }
     formatDate(dateString) {
@@ -459,18 +438,14 @@ class TaskTracker {
         return date.toLocaleString();
     }
 
-    // Event Listeners Setup
     setupEventListeners() {
-        // Add Task Button
         document.getElementById('addTaskBtn').addEventListener('click', () => {
             this.openTaskModal();
         });
 
-        // Floating FAB (mobile) handler
         const fab = document.getElementById('fabAddTask');
         if (fab) fab.addEventListener('click', () => this.openTaskModal());
 
-        // Close Modals
         document.getElementById('closeTaskModal').addEventListener('click', () => {
             this.closeTaskModal();
         });
@@ -479,7 +454,6 @@ class TaskTracker {
             this.closeTaskModal();
         });
 
-        // View switcher
         document.querySelectorAll('.view-switch-btn').forEach(function (btn) {
             btn.addEventListener('click', function () {
                 this.setViewMode(btn.dataset.view);
@@ -505,18 +479,15 @@ class TaskTracker {
             });
         }
 
-        // Task Form
         document.getElementById('taskForm').addEventListener('submit', (e) => {
             e.preventDefault();
             this.handleTaskSubmit();
         });
 
-        // Close modals on outside click
         document.getElementById('taskModal').addEventListener('click', (e) => {
             if (e.target.id === 'taskModal') this.closeTaskModal();
         });
 
-        // Snackbar undo click (in case user presses undo when it's visible)
         const undoBtn = document.getElementById('snackbarUndo');
         if (undoBtn) {
             undoBtn.addEventListener('click', () => {
@@ -529,7 +500,6 @@ class TaskTracker {
         this.updateViewButtons();
     }
 
-    // Modal Management
     openTaskModal(task = null, presetDueDate = null) {
         this.currentEditingTask = task;
         const modal = document.getElementById('taskModal');
@@ -598,7 +568,6 @@ class TaskTracker {
         ).join('');
     }
 
-    // Rendering
     render() {
         if (this.viewMode === 'kanban') {
             this.renderKanban();
@@ -615,7 +584,6 @@ class TaskTracker {
 
         const columnsContainer = document.getElementById('kanbanColumns');
         if (!Array.isArray(this.categories) || this.categories.length === 0) {
-            // ensure we always have default columns
             this.categories = ['To Do', 'In Progress', 'Done'];
         }
 
@@ -729,7 +697,6 @@ class TaskTracker {
             return;
         }
 
-        // Group by category
         const grouped = {};
         this.tasks.forEach(task => {
             if (!grouped[task.category]) grouped[task.category] = [];
@@ -810,7 +777,6 @@ class TaskTracker {
         return div.innerHTML;
     }
 
-    // Drag and Drop
     setupDragAndDrop() {
         const taskCards = document.querySelectorAll('.task-card');
         const columns = document.querySelectorAll('.tasks-container');
