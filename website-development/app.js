@@ -1,4 +1,5 @@
-// OpenTrackr Application
+// Task tracker (tracker.html): Kanban board, list view, FullCalendar, drag-and-drop.
+// Task data: localStorage keys taskTracker_tasks, taskTracker_categories, taskTracker_viewMode, etc.
 class TaskTracker {
     constructor() {
         this.tasks = [];

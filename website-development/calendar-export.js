@@ -1,4 +1,5 @@
-// Export OpenTrackr tasks as .ics for Google, Outlook, Apple, and other calendar apps
+// Export OpenTrackr tasks as .ics for Google, Outlook, Apple, and other calendar apps.
+// Used on register.html and settings.html; reads tasks from taskTracker_tasks in localStorage.
 window.OpenTrackrCalendar = {
     TASKS_KEY: 'taskTracker_tasks',
 

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Task tracker: Kanban, list, calendar (FullCalendar), planners. See app.js and planner.js. -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,6 +15,7 @@
         <header class="site-header">
             <div class="site-header-inner">
                 <h1 class="site-title"><a href="index.html">📋 OpenTrackr ✏️</a></h1>
+                <!-- Shared nav: copy to each HTML page. Mark current page with class="active" on its link. -->
                 <nav class="site-nav" aria-label="Main navigation">
                     <a href="index.html" class="nav-link nav-link--home">Home</a>
                     <a href="tracker.html" class="nav-link nav-link--tracker active">Task Tracker</a>
@@ -209,6 +211,7 @@
             </main>
         </div>
 
+        <!-- Site footer: same block on every page; centred via .site-footer in css/styles.css -->
         <footer class="site-footer">
             <p>Stefan Gislason | Assessment 3 Due: 23 July 2026</p>
         </footer>
@@ -219,6 +222,7 @@
         <button id="snackbarUndo" class="btn-secondary" type="button">Undo</button>
     </div>
 
+    <!-- Load order matters: calendar helpers first, then tracker, then planner widgets -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
     <script src="calendar-export.js"></script>
     <script src="theme.js"></script>
