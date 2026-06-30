@@ -4,6 +4,28 @@ A simple, smart productivity app that helps you stay organised with tasks, to-do
 
 **Repository:** [github.com/Giza88/OpenTrackr](https://github.com/Giza88/OpenTrackr)
 
+## Live site (for markers)
+
+A live version of OpenTrackr is available for convenience:
+
+**Primary link:** [https://open-trackr.vercel.app/](https://open-trackr.vercel.app/)
+
+**Alternative link** (if the primary link does not load correctly):  
+[https://open-trackr.vercel.app/OpenTrackr](https://open-trackr.vercel.app/OpenTrackr)
+
+See [HOW-TO.md](HOW-TO.md) for a quick guide on what to open and where to click.
+
+### Quick start for markers
+
+1. Open the **primary link** above in Chrome, Edge, or Firefox.
+2. Start on the **Home** page — planning tips, weekly template, and video.
+3. Click **Task Tracker** (or **Open Task Tracker**) to use the calendar, Kanban, and list views.
+4. Try **Register** for the registration form validation demo.
+5. Use **Settings** to change theme, categories, and preferences.
+6. Use **About** for project information.
+
+No login or install is required — the site runs in the browser. Task data is saved locally in your browser (localStorage).
+
 ## Features
 
 - **Home page** — planning tips, weekly template, YouTube guide, interactive topic cards
