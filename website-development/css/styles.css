@@ -229,6 +229,11 @@ body.about-page .site-footer {
     transition: all 0.2s ease;
 }
 
+a.btn-primary {
+    display: inline-block;
+    text-decoration: none;
+}
+
 .btn-primary:hover {
     background-color: var(--accent-hover);
     transform: translateY(-2px);
@@ -1003,6 +1008,15 @@ body.about-page .site-footer {
 .intro-text {
     margin-bottom: 1.5rem;
     color: var(--text-secondary);
+}
+
+.content-section p:not(.intro-text) {
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+}
+
+.content-section a.btn-primary {
+    margin-top: 0.5rem;
 }
 
 .hero-section {

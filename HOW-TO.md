@@ -7,16 +7,13 @@
 
 A live version of OpenTrackr is available for convenience:
 
-| Link | URL |
-|------|-----|
-| **Primary** | [https://open-trackr.vercel.app/](https://open-trackr.vercel.app/) |
-| **Alternative** (if the primary link does not load) | [https://open-trackr.vercel.app/OpenTrackr](https://open-trackr.vercel.app/OpenTrackr) |
+**Live site:** [https://open-trackr.vercel.app/](https://open-trackr.vercel.app/)
 
 ## What to check
 
 | Page | How to open | What it shows |
 |------|-------------|---------------|
-| Home | Open the primary link | Planning tips, weekly template, YouTube video |
+| Home | Open the live site link | Planning tips, weekly template, YouTube video |
 | Task Tracker | Click **Task Tracker** in the navigation | Calendar, Kanban board, list view, to-do list |
 | Register | Click **Register** | HTML5 form validation |
 | Settings | Click **Settings** | Theme, categories, export/import |
